@@ -1,0 +1,6 @@
+Cohort,Pathway,Prefix,Suffix
+GANI_MED,/daten/gtnas/users/nasrk/Imputation/Scripts/Project/Input_Geno/GANI_MED,GANI_MED_chr,.vcf.gz
+SHIP_START,/daten/gtnas/users/nasrk/Imputation/Scripts/Project/Input_Geno/SHIP_START,SHIP-0_R4-QC_HG19_chr,.vcf.gz
+SHIP_START_II,/daten/gtnas/users/nasrk/Imputation/Scripts/Project/Input_Geno/SHIP_START_II,SHIP_0_AXIOM_HG19_chr,_aligned_QC.recode.vcf.gz
+SHIP_TREND,/daten/gtnas/users/nasrk/Imputation/Scripts/Project/Input_Geno/SHIP_TREND,SHIP-T-QC_HG19_chr,.vcf.gz
+SHIP_TREND_BII,/daten/gtnas/users/nasrk/Imputation/Scripts/Project/Input_Geno/SHIP_TREND_BII,SHIP-T_B2_R2-HG19_chr,.sorted.vcf.gz
