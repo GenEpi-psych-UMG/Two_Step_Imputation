@@ -1,7 +1,7 @@
 # Two-Step imputation workflow
 
 This pipleline is designed to generate the intermediate panel that is required as an input for the two-step imputation workflow. The main workflow aims to overcome the technical bias due two batch effect between different genotyped cohorts. The whole worflow is represented in the figure below.
-![Alt Text](GenEpi-psych-UMG/Two_Step_Imputation/blob/main/Images/workflow.png)
+![Alt Text](Images/workflow.png)
 
 Full description, testing and evaluation of the workflow is available in the manuscript.
 
