@@ -1,76 +1,93 @@
 #!/bin/bash
 
-# Source the configuration file to load paths and parameters
-source "$1"
+# Usage: bash run_pipeline.sh /path/to/config.sh
 
-# Check if the necessary variables are loaded properly
-if [ -z "$INFO" ] ||  [ -z "$cohorts" ]; then
-  echo "Error: Config file variables not loaded properly."
+# Check if the config file is provided
+if [ -z "$1" ]; then
+  echo "Error: Path to config.sh is required."
   exit 1
 fi
 
-# Check if the cohorts file exists
-if [ ! -f "$cohorts" ]; then
-  echo "Error: Cohorts file not found."
+# Source the configuration file
+CONFIG_FILE="$1"
+source "$CONFIG_FILE"
+
+# Check if WD is set in the config file
+if [ -z "$WD" ]; then
+  echo "Error: 'WD' variable not set in config.sh."
   exit 1
 fi
 
-# Read the cohorts file into arrays
-cohort_names=()
-cohort_paths=()
-Prefixes=()
-Suffixes=()
+# Step 1: Alignment
+echo "Running Alignment..."
+bash "$WD/Alignment.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: Alignment.sh failed."
+  exit 1
+fi
 
+# Step 2: VCF to BCF Conversion and Indexing
+echo "Converting VCF to BCF..."
+bash "$WD/VCF_BCF.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: VCF_BCF.sh failed."
+  exit 1
+fi
 
-skip_header=true
-while IFS=',' read -r Cohort Pathway Prefix Suffix; do
-if $skip_header; then
-    skip_header=false
-    continue
-  fi
-  cohort_names+=("$Cohort")
-  cohort_paths+=("$Pathway")
-  Prefixes+=("$Prefix")
-  Suffixes+=("$Suffix")
-done < "$cohorts"
+# Step 3: Phasing
+echo "Running Phasing..."
+bash "$WD/phase.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: phase.sh failed."
+  exit 1
+fi
 
-# Perform pairwise imputation
-for i in "${!cohort_names[@]}"; do
-  input_cohort="${cohort_names[$i]}"
-  input_pathway="${cohort_paths[$i]}"
+# Step 4: Convert to msav format (Reference Panel preparation)
+echo "Converting to RefP format..."
+bash "$WD/convert_RefP.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: convert_RefP.sh failed."
+  exit 1
+fi
 
-# Create a separate output log file for each input cohort
-  output_log="${input_pathway}/${input_cohort}_INFO_files.txt"
-  echo -e "Path\tReference\tchr" > "$output_log"
+# Step 5: Imputation using Minimac4
+echo "Running Minimac4 Imputation..."
+bash "$WD/minimac4.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: minimac4.sh failed."
+  exit 1
+fi
 
-  for j in "${!cohort_names[@]}"; do
-    target_cohort="${cohort_names[$j]}"
-    target_pathway="${cohort_paths[$j]}"
+# Step 6: Generate R input files
+echo "Generating R Input..."
+bash "$WD/R_Input.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: R_Input.sh failed."
+  exit 1
+fi
 
-# Trim any leading/trailing whitespace from variables
-  input_pathway=$(echo "$input_pathway" | sed 's/[[:space:]]*$//')
-  target_pathway=$(echo "$target_pathway" | sed 's/[[:space:]]*$//')
-  input_cohort=$(echo "$input_cohort" | xargs)
-  target_cohort=$(echo "$target_cohort" | xargs)
+# Step 7: Run the R Algorithm for SNP Selection
+echo "Running R Command..."
+bash "$WD/R_Command.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: R_Command.sh failed."
+  exit 1
+fi
 
-    # Ensure input cohort and target cohort are not the same
-    if [ "$input_cohort" != "$target_cohort" ]; then
+# Step 8: Apply VCF Filtering using VCFtools
+echo "Applying VCF Filtering..."
+bash "$WD/VCF_Filter_Vcftools.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: VCF_Filter_Vcftools.sh failed."
+  exit 1
+fi
 
-      # Loop through chromosomes 1 to 2
-      for chr in {1..22}; do
+# Step 9: Merge filtered VCFs using BCFtools
+echo "Merging VCF Files..."
+bash "$WD/Merge_VCF_BCFtools.sh" "$CONFIG_FILE"
+if [ $? -ne 0 ]; then
+  echo "Error: Merge_VCF_BCFtools.sh failed."
+  exit 1
+fi
 
-        
-# Run the minimac4 command
-output_file="${input_pathway}/${input_cohort}_chr${chr}_imputed_${target_cohort}.dose"
-if [ $? -eq 0 ]; then
-      echo "imputation of ${Output_file} is done"
-
-# Append the output file path and target cohort (reference) to the cohort-specific log file
-          echo -e ""${output_file}.all.info.txt"\t${target_cohort}\t${chr}" >> "$output_log"
-        else
-          echo "Error: Imputation of ${output_file} failed"
-        fi
-      done
-    fi
-  done
-done
+echo "Pipeline completed successfully."
