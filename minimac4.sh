@@ -68,8 +68,8 @@ echo "Output_file= '$Output_file'"
 # Run the minimac4 command
         $minimac4 ${Ref_file} \
                   ${Input_file} \
-                  --prefix ${Output_file} \
-                  -f GT --output-format vcf.gz \
+                  --o ${Output_file}.vcf.gz \
+                  -f GT \
                   --all-typed-sites \
                   --threads ${cpus}
 if [ $? -eq 0 ]; then
