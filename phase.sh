@@ -81,7 +81,6 @@ output_convert="${pathway}/${Cohort_prefix}_chr${chr}_phased_RefP.msav"
 
 tabix "$output_phased".vcf.gz
 
-minimac4 --compress-reference "$output_phased".vcf.gz  -o "$output_convert"
 # Check if bcftools was successful
     if [ $? -eq 0 ]; then
       echo "phasing for ${input_bcf} is done"
@@ -89,9 +88,9 @@ minimac4 --compress-reference "$output_phased".vcf.gz  -o "$output_convert"
       echo "Error: Phasing for ${input_bcf} failed"
     fi
 endtime=`date +%s`
-echo "runtime of convert_m3vcf.sh was $((endtime-starttime)) seconds for chr ${chr}"
+echo "runtime of phase.sh was $((endtime-starttime)) seconds for chr ${chr}"
   done
 endalltime=`date +%s`
-echo "runtime of convert_m3vcf.sh was $((endalltime-startalltime)) seconds for ${Cohort_prefix} "
+echo "runtime of phase.sh was $((endalltime-startalltime)) seconds for ${Cohort_prefix} "
      echo "phasing for ${Cohort_prefix} done"
 done
