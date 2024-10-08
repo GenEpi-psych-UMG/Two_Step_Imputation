@@ -76,9 +76,9 @@ output_phased="${pathway}/${Cohort_prefix}_chr${chr}_phased_RefP.msav"
       echo "Error: Phasing for ${input_phased} failed"
     fi
 endtime=`date +%s`
-echo "runtime of convert_m3vcf.sh was $((endtime-starttime)) seconds for chr ${chr}"
+echo "runtime of convert_RefP.sh was $((endtime-starttime)) seconds for chr ${chr}"
   done
 endalltime=`date +%s`
-echo "runtime of convert_m3vcf.sh was $((endalltime-startalltime)) seconds for ${Cohort_prefix} "
+echo "runtime of convert_RefP.sh was $((endalltime-startalltime)) seconds for ${Cohort_prefix} "
      echo "phasing for ${Cohort_prefix} done"
 done
