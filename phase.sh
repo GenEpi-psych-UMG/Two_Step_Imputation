@@ -58,7 +58,7 @@ for chr in {1..23}; do
 starttime=`date +%s`
 input_bcf="${pathway}/${Cohort_prefix}_chr${chr}_aligned.bcf.gz"
 output_phased="${pathway}/${Cohort_prefix}_chr${chr}_phased"
-output_convert= "${pathway}/${Cohort_prefix}_chr${chr}_phased_RefP.msav"
+output_convert="${pathway}/${Cohort_prefix}_chr${chr}_phased_RefP.msav"
  # Debugging: Print the file paths being used
     echo "Input VCF: $input_bcf"
     echo "Output VCF: $output_phased"
