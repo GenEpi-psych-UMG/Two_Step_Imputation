@@ -60,13 +60,13 @@ for i in "${!cohort_names[@]}"; do
       for chr in {1..22}; do
 
         # Define the input, target, and output file paths
-        Output_file="${input_pathway}/${input_cohort}_chr${chr}_imputed_${target_cohort}.dose"
+        Output_file="${input_pathway}/${input_cohort}_chr${chr}_imputed_${target_cohort}"
 
 
 echo "Output_file= '$Output_file'"
 
 # Run the minimac4 command
-"$INFO" ${input_pathway}/ ${input_cohort}_chr${chr}_imputed_${target_cohort}.dose
+"$INFO" ${input_pathway}/ ${input_cohort}_chr${chr}_imputed_${target_cohort}
 if [ $? -eq 0 ]; then
       echo "imputation of ${Output_file} is done"
 # Append the output file path and target cohort (reference) to the cohort-specific log file
