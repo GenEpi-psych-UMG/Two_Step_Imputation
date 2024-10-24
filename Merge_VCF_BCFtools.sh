@@ -78,12 +78,12 @@ echo "Output_file= '$Output_file'"
 
 VCF_FILES=$(find "$VCF_DIR" -name "*chr${chr}*addon.recode.vcf.gz" -o -name "*chr${chr}*kept.recode.vcf.gz")
 if [ -z "$VCF_FILES" ]; then
-    echo "No VCF files found for chromosome ${i}. Skipping..."
+    echo "No VCF files found for chromosome ${chr}. Skipping..."
     continue
   fi
 
   # Print the VCF files found
-  echo "VCF files found for chromosome ${i}:"
+  echo "VCF files found for chromosome ${chr}:"
   echo "$VCF_FILES"
 
 # Convert the VCF_FILES into a space-separated list for bcftools
@@ -92,14 +92,14 @@ starttime=`date +%s`
 
   # Check if there are at least two files to concatenate
   if [ ${#VCF_FILES_ARRAY[@]} -lt 2 ]; then
-    echo "Not enough VCF files to concatenate for chromosome ${i}. Skipping..."
+    echo "Not enough VCF files to concatenate for chromosome ${chr}. Skipping..."
     continue
   fi
 bcftools concat -a ${VCF_FILES_ARRAY[@]} -Oz -o "$Output_file"
 
   # Check if bcftools concat succeeded
   if [ $? -ne 0 ]; then
-    echo "Error: Concatenation failed for chromosome ${i}."
+    echo "Error: Concatenation failed for chromosome ${chr}."
       else
       echo "Error: vcf filtration for ${Output_file} failed"
     fi
