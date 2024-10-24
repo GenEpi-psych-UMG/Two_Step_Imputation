@@ -24,6 +24,7 @@ We recommend performing minimal quality control measurements for genotype data b
 - rare variants excludion
 - splitting multiallelic sites to biallelic records
 - removing sites with missing data
+- sorting by chromosome and position
 
 
 ## Installation
