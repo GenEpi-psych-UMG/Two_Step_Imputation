@@ -13,17 +13,23 @@ Full description, testing and evaluation of the workflow is available in the man
 
 ### Prerequisites
 - this project requires the follwoing softwares to be installed 
-  [bcftools v1.14](https://samtools.github.io/bcftools/), [tabix 0.2.5](https://anaconda.org/bioconda/tabix), [minimac v4.1.4](https://genome.sph.umich.edu/wiki/Minimac4), [Eagle_v2.4.1](https://alkesgroup.broadinstitute.org/Eagle/), [VCFtools (0.1.17)](https://vcftools.sourceforge.net/index.html), [perl](https://www.perl.org/get.html)
-- It also requires the presence of fasta file of human g1k (human_g1k_v37.fasta) and genetic_map_hg19 "genetic_map_hg19_withX.txt.gz"
-Beside installation, the pathway to their location on the device needs to be declared in the configuration file as will be clarified later.
+  [bcftools v1.14](https://samtools.github.io/bcftools/), [tabix 0.2.5](https://anaconda.org/bioconda/tabix), [minimac v4.1.4](https://genome.sph.umich.edu/wiki/Minimac4), [Eagle_v2.4.1](https://alkesgroup.broadinstitute.org/Eagle/), [VCFtools (0.1.17)](https://vcftools.sourceforge.net/index.html), and [perl](https://www.perl.org/get.html)
+- It also requires the presence of fasta file of human g1k [human_g1k_v37.fasta](https://www.internationalgenome.org/category/grch37/) and [Genetic map file](https://data.broadinstitute.org/alkesgroup/Eagle/downloads/tables/) (all chromosomes in a single file) with recombination frequencies.
+Beside installation, the pathway to their location on the device needs to be declared in the configuration file as will be clarified later. the pipline is adjusted to human genome build 19, however, it can be modified to fit other genome builds.
 
-It also requires the genotyping data of the autosomal chromosomes for included cohorts in the two-step imputation to be one VCF file per chromomse, distinguished by numbers from 1-22. Each cohorts contains the genotyping data in a separate directory. For each cohort, the prefix and suffix of all chromosomes should be the same for each cohort.
+The pipeline requires the QCed genotyping data of the autosomal chromosomes for included cohorts in the two-step imputation to be one VCF file per chromomse, distinguished by numbers from 1-22. Each cohorts contains the genotyping data in a separate directory. For each cohort, the prefix and suffix of all chromosomes should be the same for each cohort.
+
+We recommend performing minimal quality control measurements for genotype data before running the imputation pipleine, these measurements include;
+- chr annotations removal
+- rare variants excludion
+- splitting multiallelic sites to biallelic records
+- removing sites with missing data
 
 
 ## Installation
 Clone the repository on your working directory, either by direct downlaod or using the git clone command
 ```bash
-git clone https://github.com/username/repository.git
+git clone https://github.com/GenEpi-psych-UMG/Two_Step_Imputation.git
 ```
 
 the repository includes stepwise scripts for the imputation workflow which require no further edits, only two files needs to be edited before starting the imputation:
@@ -40,9 +46,11 @@ Pathway= bath/to/directory
 Prefix= Cohort_A_chr
 Suffix= .vcf.gz
 
-Note that the Pathway doesn't end with "/"
+PLEASE NOTE:
+- the Pathway doesn't end with "/"
+- Better to use other text editors to update Cohorts_Info.csv rather than microsoft excel
 
-Save the table always incsv format
+After updating Cohorts_Info.csv, make sure that it was saved in csv format.
 
 2. config.sh
 Contains pathway and parameters needed for this pipeline, it is required to update the pathways of the working directory of the repository and other softwares in this file. there are other parameters incuded like number of used cpus and ietration rounds for imputation that can work without modifications but still modifiable according to the imputation's specific needs. 
