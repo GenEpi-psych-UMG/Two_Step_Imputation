@@ -69,7 +69,7 @@ for i in "${!Cohorts[@]}"; do
 
     # Align the VCF file
     bcftools norm -c s -f "$fasta" -O z -o "$output_vcf" "$input_vcf"
-    
+    tabix -p vcf "$output_vcf"
     # Check if bcftools was successful
     if [ $? -eq 0 ]; then
       echo "Alignment for ${input_vcf} is done"
