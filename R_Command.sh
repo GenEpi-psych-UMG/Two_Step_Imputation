@@ -52,9 +52,9 @@ cd ${input_pathway}
 Rscript "$WD"/SNP_Selection.R "$Input_file"
  
 if [ $? -eq 0 ]; then
-      echo "Intermediate panel ${Output_file} is generated"
+      echo "filtration lists for ${input_cohort} is generated"
 
     else
-      echo "Error: Intermediate panel ${Output_file} failed"
+      echo "Error: filtration lists for ${input_cohort} failed"
     fi
       done
