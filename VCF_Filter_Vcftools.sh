@@ -56,7 +56,7 @@ for i in "${!cohort_names[@]}"; do
       for chr in {1..22}; do
 
         # Define the input, target, and output file paths
-        Input_file="${input_pathway}/${input_cohort}_chr${chr}_imputed_${target_cohort}.dose.vcf.gz"
+        Input_file="${input_pathway}/${input_cohort}_chr${chr}_imputed_${target_cohort}.vcf.gz"
         filter_file="${input_pathway}/Keep_list_main_chr${chr}_${target_cohort}.txt"
         Output_file="${input_pathway}/${input_cohort}_chr${chr}_imputed_${target_cohort}"
         WD="${input_pathway}"
