@@ -62,8 +62,8 @@ VCF_DIR="${input_pathway}"
         Output_file="${input_pathway}/Outcome/${input_cohort}_chr${chr}_imputed_combined.vcf.gz"
         
 
-VCF_FILES=$(find "$VCF_DIR" -name "*chr${i}*addon.recode.vcf.gz" -o -name "*chr${i}*kept.recode.vcf.gz")
-        # Run the minimac4 command
+VCF_FILES=$(find "$VCF_DIR" -name "*chr${i}_*addon.recode.vcf.gz" -o -name "*chr${i}_*kept.recode.vcf.gz")
+        
 #echo "Input_file= '$Input_file'"
 #echo "filter_file= '$filter_file'"
 echo "Output_file= '$Output_file'"
