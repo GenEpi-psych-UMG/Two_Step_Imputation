@@ -99,9 +99,9 @@ bcftools concat -a ${VCF_FILES_ARRAY[@]} -Oz -o "$Output_file"
 
   # Check if bcftools concat succeeded
   if [ $? -ne 0 ]; then
-    echo "Error: Concatenation failed for chromosome ${chr}."
+    echo "Concatenation done for chromosome ${chr}."
       else
-      echo "Error: vcf filtration for ${Output_file} failed"
+      echo "Error: Concatenation failed for chromosome ${chr}."
     fi
 endtime=`date +%s`
 echo "chromosome ${chr} for ${input_cohort}  processed in $(($endtime - $starttime)) seconds."
