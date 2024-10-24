@@ -13,7 +13,7 @@ Full description, testing and evaluation of the workflow is available in the man
 
 ### Prerequisites
 - this project requires the follwoing softwares to be installed 
-  'bcftools v1.14', 'tabix 0.2.5', 'minimac v4.1.4', 'Eagle_v2.4.1', 'VCFtools (0.1.17)', perl
+  [bcftools v1.14](https://samtools.github.io/bcftools/), [tabix 0.2.5](https://anaconda.org/bioconda/tabix), [minimac v4.1.4](https://genome.sph.umich.edu/wiki/Minimac4), [Eagle_v2.4.1](https://alkesgroup.broadinstitute.org/Eagle/), [VCFtools (0.1.17)](https://vcftools.sourceforge.net/index.html), [perl](https://www.perl.org/get.html)
 - It also requires the presence of fasta file of human g1k (human_g1k_v37.fasta) and genetic_map_hg19 "genetic_map_hg19_withX.txt.gz"
 Beside installation, the pathway to their location on the device needs to be declared in the configuration file as will be clarified later.
 
