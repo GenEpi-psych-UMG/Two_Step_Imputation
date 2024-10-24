@@ -1,3 +1,11 @@
+#######################
+#
+# R scripted algorithm for variants filtration lists creation 
+#
+# (c) M.Kamal Nasr 2024 mohammed.nasr@uni-greifswald.de
+#
+#######################
+
 ####Get SNP_Lists to be filtered out from the main Panel and extract it from the add on panel.
 if(!require("data.table")) install.packages("data.table")
 if(!require("dplyr")) install.packages("dplyr")
