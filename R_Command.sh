@@ -52,12 +52,9 @@ cd ${input_pathway}
 Rscript "$WD"/SNP_Selection.R "$Input_file"
  
 if [ $? -eq 0 ]; then
-      echo "imputation of ${Output_file} is done"
+      echo "Intermediate panel ${Output_file} is generated"
 
     else
-      echo "Error: imputation of ${Output_file} failed"
+      echo "Error: Intermediate panel ${Output_file} failed"
     fi
       done
-
-  done
-done
