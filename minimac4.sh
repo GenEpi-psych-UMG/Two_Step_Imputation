@@ -68,7 +68,7 @@ echo "Output_file= '$Output_file'"
 # Run the minimac4 command
         $minimac4 ${Ref_file} \
                   ${Input_file} \
-                  --o ${Output_file}.vcf.gz \
+                  --output ${Output_file}.vcf.gz \
                   -f GT \
                   --all-typed-sites \
                   --threads ${cpus}
