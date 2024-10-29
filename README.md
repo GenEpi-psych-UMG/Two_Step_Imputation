@@ -20,10 +20,10 @@ Beside installation, the pathway to their location on the device needs to be dec
 The pipeline requires the QCed genotyping data of the autosomal chromosomes for included cohorts in the two-step imputation to be one VCF file per chromomse, distinguished by numbers from 1-22. Each cohorts contains the genotyping data in a separate directory. For each cohort, the prefix and suffix of all chromosomes should be the same for each cohort.
 
 We recommend performing minimal quality control measurements for genotype data before running the imputation pipleine, these measurements include;
-- chr annotations removal
+- chromosome annotations in the VCF files (numircal instead of character)
 - rare variants excludion
 - splitting multiallelic sites to biallelic records
-- removing sites with missing data
+- removing sites with missing call rates information
 - sorting by chromosome and position
 
 
