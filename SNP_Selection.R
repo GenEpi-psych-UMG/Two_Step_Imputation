@@ -44,8 +44,18 @@ for (i in unique(all_data$chr)) {
   input <- all_data[all_data$chr == i,]
 
   
-  if (nrow(input) < 2) {
-    stop("Not enough panels")
+  if (nrow(input) == 1) {
+    #stop("Not enough panels")
+    Addon_panel_path <- input$Path[1]
+      Addon_panel_info <- fread(Addon_panel_path)
+      
+      ##Select unique variants 
+      Addon_panel_info$POS <- sub(".*:(\\d+):.*", "\\1", Addon_panel_info$SNPID)
+      Addon_panel_info$chr <- sub("(\\d+):.*", "\\1", Addon_panel_info$SNPID)
+      Addon_panel_info <- Addon_panel_info[as.numeric(Addon_panel_info$R2) >= 0.9,] ##Threshold for imputation quality
+      Addon_unique <- subset(Addon_panel_info, select = c("chr", "POS"))
+      write.table(Addon_unique[,1:2], paste("Keep_list_main_chr", Filter_out_main$chr[1], ".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+
   }else {
     ##Read files
     if (nrow(input) == 2) {
@@ -60,12 +70,14 @@ for (i in unique(all_data$chr)) {
       #Addon_panel_info$Reference <- arguments[2,2]
       #Main_panel_info$Reference <- arguments[1,2]
       Addon_unique <- Addon_panel_info[!(Addon_panel_info$SNPID %in% Main_panel_info$SNPID),]
+      Addon_unique <- Addon_unique[as.numeric(Addon_unique$R2) >= 0.9,] ##Threshold for imputation quality
       Addon_unique <- subset(Addon_unique, select = c("chr", "POS"))
       ###Define overlapping variants with higher R2 in the add-on panel
       Panel_merge <- merge(Main_panel_info, Addon_panel_info, by = c("SNPID", "ID"))
       
       ##Select filter-out SNPs in main SNP-list
       Filter_out_main <- Panel_merge[Panel_merge$R2.y > Panel_merge$R2.x]
+      Filter_out_main <- Filter_out_main[as.numeric(Filter_out_main$R2.y) >= 0.9,] ##Threshold for imputation quality
       Filter_out_main$POS <- sub(".*:(\\d+):.*", "\\1", Filter_out_main$SNPID)
       Filter_out_main$chr <- sub("(\\d+):.*", "\\1", Filter_out_main$SNPID)
       Filter_out_main <- subset(Filter_out_main, select = c("chr", "POS"))
@@ -133,12 +145,14 @@ for (i in unique(all_data$chr)) {
       Addon_panel_info$POS <- sub(".*:(\\d+):.*", "\\1", Addon_panel_info$SNPID)
       Addon_panel_info$chr <- sub("(\\d+):.*", "\\1", Addon_panel_info$SNPID)
       Addon_unique <- Addon_panel_info[!(Addon_panel_info$SNPID %in% Main_panel_info$SNPID),]
+      Addon_unique <- Addon_unique[as.numeric(Addon_unique$R2) >= 0.9,] ##Threshold for imputation quality
       Addon_unique <- subset(Addon_unique, select = c("chr", "POS", "Reference"))
       ###Define overlapping variants with higher R2 in the add-on panel
       Panel_merge <- merge(Main_panel_info, Addon_panel_info, by = c("SNPID", "ID"))
       
       ##Select filter-out SNPs in main SNP-list
       Filter_out_main <- Panel_merge[Panel_merge$R2.y > Panel_merge$R2.x]
+      Filter_out_main <- Filter_out_main[as.numeric(Filter_out_main$R2.y) >= 0.9,] ##Threshold for imputation quality
       Filter_out_main <- subset(Filter_out_main, select = c("chr", "POS", "Reference","Reference_main"))
       
       write.table(Filter_out_main, paste("filterout_main_chr", Filter_out_main$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
