@@ -46,15 +46,15 @@ for (i in unique(all_data$chr)) {
   
   if (nrow(input) == 1) {
     #stop("Not enough panels")
-    Addon_panel_path <- input$Path[1]
-      Addon_panel_info <- fread(Addon_panel_path)
+    Filter_out_main_path <- input$Path[1]
+      Filter_out_main_info <- fread(Filter_out_main_path)
       
       ##Select unique variants 
-      Addon_panel_info$POS <- sub(".*:(\\d+):.*", "\\1", Addon_panel_info$SNPID)
-      Addon_panel_info$chr <- sub("(\\d+):.*", "\\1", Addon_panel_info$SNPID)
-      Addon_panel_info <- Addon_panel_info[as.numeric(Addon_panel_info$R2) >= 0.9,] ##Threshold for imputation quality
-      Addon_unique <- subset(Addon_panel_info, select = c("chr", "POS"))
-      write.table(Addon_unique[,1:2], paste("Keep_list_main_chr", Filter_out_main$chr[1], ".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      Filter_out_main_info$POS <- sub(".*:(\\d+):.*", "\\1", Filter_out_main_info$SNPID)
+      Filter_out_main_info$chr <- sub("(\\d+):.*", "\\1", Filter_out_main_info$SNPID)
+      Filter_out_main_info <- Filter_out_main_info[as.numeric(Filter_out_main_info$R2) < 0.9,] ##Threshold for imputation quality
+      Filter_out_main <- subset(Filter_out_main_info, select = c("chr", "POS"))
+      write.table(Filter_out_main[,1:2], paste("filterout_main_chr", Filter_out_main$chr[1], ".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
 
   }else {
     ##Read files
