@@ -39,17 +39,17 @@ the repository includes stepwise scripts for the imputation workflow which requi
 The table includes information about the genotyping cohorts, each row represents one cohorts including the pathway to the genotype data. example here for cohort "Cohort_A" where its VCF files in the following format:
 
 ```bash
-bath/to/directory/Cohort_A_chr{i}.vcf.gz
+path/to/directory/Cohort_A_chr{i}.vcf.gz
 ```
 each column should be filled for this cohort as follows;
 Cohort = Cohort_A
-Pathway= bath/to/directory
+Pathway= path/to/directory
 Prefix= Cohort_A_chr
 Suffix= .vcf.gz
 
 PLEASE NOTE:
 - the Pathway doesn't end with "/"
-- Better to use other text editors to update Cohorts_Info.csv rather than microsoft excel
+- Better to use other text editors to update Cohorts_Info.csv rather than Microsoft excel
 
 After updating Cohorts_Info.csv, make sure that it was saved in csv format.
 
@@ -63,7 +63,7 @@ You can run the whole pipleine in one command
 which will take the working directory as an argument from the configuration source and run all commands of the pipeline at one time, after updating the cohort info and the configurations file just run the command:
 
 ```bash
-bash bath/to/directory/Run_all.sh <bath/to/directory/config.sh>
+bash path/to/directory/Run_all.sh <path/to/directory/config.sh>
 ```
 as an alternative you can run each script separately as follows;
 
@@ -71,20 +71,20 @@ as an alternative you can run each script separately as follows;
 To insure the alignment of all included genotype data to the same strand, taking the location of fastafile as an input
 
 ```bash
-bash bath/to/directory/Alignment.sh <bath/to/directory/config.sh>
+bash path/to/directory/Alignment.sh <path/to/directory/config.sh>
 ```
 
 2. vcf to bcf
 Converting and indexing VCF files to BCF format for the follwoing phasing step.
 
 ```bash
-bash bath/to/directory/VCF_BCF.sh <bath/to/directory/config.sh>
+bash path/to/directory/VCF_BCF.sh <path/to/directory/config.sh>
 ```
 
 3. Phasing
 phasing of the included genotype data
 ```bash
-bash bath/to/directory/phase.sh <bath/to/directory/config.sh>
+bash path/to/directory/phase.sh <path/to/directory/config.sh>
 ```
 
 4. convert_refP
@@ -92,41 +92,41 @@ before the first round of imputation, a msav format of the phased genotyped data
 
 
 ```bash
-bash bath/to/directory/convert_RefP.sh <bath/to/directory/config.sh>
+bash path/to/directory/convert_RefP.sh <path/to/directory/config.sh>
 ```
 5.minimac4.sh
 Running the imputation for all included cohorts, each cohort is imputed against all other included cohorts, all the output imputation files are saved in the same pathway of the imputed cohorts
 
 ```bash
-bash bath/to/directory/minimac4.sh <bath/to/directory/config.sh>
+bash path/to/directory/minimac4.sh <path/to/directory/config.sh>
 ```
 
 6. R_Input.sh
 The script generates an info file for each imputed genotpe file (one info file for each chromosme per cohort), containing variant information including R2 imputation quality. This should by used by the following R-scripted algorithm for building the intermediate panel.
 
 ```bash
-bash bath/to/directory/R_Input.sh <bath/to/directory/config.sh>
+bash path/to/directory/R_Input.sh <path/to/directory/config.sh>
 ```
 
 7. R_Command.sh
 This file runs the R algorithm (SNP_Selection.R) over the generated imputed gentoype files in step 5, the output of the algorithm is one filterout variants, which filter out variants from the corresponding imputed outcomes, and keep list files, which includes the variants to be filtered out from other imputed files. 
 
 ```bash
-bash bath/to/directory/R_Command.sh <bath/to/directory/config.sh>
+bash path/to/directory/R_Command.sh <path/to/directory/config.sh>
 ```
 
 8. VCF_Filter_Vcftools.sh
 This script uses VCFtools software to apply the filtration lists generated from the R-script to filter imputed genotype variants generated in step 5. 
 
 ```bash
-bash bath/to/directory/VCF_Filter_Vcftools.sh <bath/to/directory/config.sh>
+bash path/to/directory/VCF_Filter_Vcftools.sh <path/to/directory/config.sh>
 ```
 
 9. Merge_VCF_BCFtools.sh
 The last step is to merge all the filtered files for each cohort into one vcf file per chromosome, the merging process is performed using BCF tools
 
 ```bash
-bash bath/to/directory/Merge_VCF_BCFtools.sh <bath/to/directory/config.sh>
+bash path/to/directory/Merge_VCF_BCFtools.sh <path/to/directory/config.sh>
 ```
 
 
