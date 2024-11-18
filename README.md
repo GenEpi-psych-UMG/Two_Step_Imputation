@@ -1,6 +1,6 @@
 # Two-Step imputation workflow
 
-This pipeline is designed to generate the intermediate panel that is required as an input for the two-step imputation workflow. The main workflow aims to overcome the technical bias due two batch effect between different genotyped cohorts. The whole worflow is represented in the figure below.
+This pipeline is designed to generate the intermediate panel that is required as an input for the two-step imputation workflow. The main workflow aims to overcome the technical bias due to batch effects between differently genotyped cohorts. The whole worflow is represented in the figure below.
 ![Alt Text](Images/workflow.png)
 
 Full description, testing and evaluation of the workflow is available in the manuscript.
