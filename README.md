@@ -35,7 +35,7 @@ git clone https://github.com/GenEpi-psych-UMG/Two_Step_Imputation.git
 
 The repository includes stepwise scripts for the imputation workflow which require no further edits, only two files need to be edited before starting the imputation:
 
-1.  Cohorts_Info.csv
+**1.  Cohorts_Info.csv**  
 The table includes information about the genotyping cohorts, each row represents one cohort including the pathway to the genotype data. Example here for cohort "Cohort_A" where its VCF files are saved in the following format:
 
 ```bash
@@ -47,13 +47,13 @@ Pathway= path/to/directory
 Prefix= Cohort_A_chr  
 Suffix= .vcf.gz  
 
-PLEASE NOTE:
-- The Pathway doesn't end with "/"
-- Better to use other text editors to update Cohorts_Info.csv rather than Microsoft excel
+**PLEASE NOTE:**
+- The pathway doesn't end with "/"
+- It is better to use other text editors to update Cohorts_Info.csv rather than Microsoft excel
 
 After updating Cohorts_Info.csv, make sure that it was saved in csv format.
 
-2. config.sh
+**2. config.sh**  
 Contains pathways and parameters needed for this eline. It is required to update the pathways of the working directory of the repository and other softwares in this file. There are other parameters included like number of used CPUs and iteration rounds for imputation that can work without modifications but are still modifiable according to the imputation's specific needs. 
 
 ## Usage
@@ -67,62 +67,62 @@ bash path/to/directory/Run_all.sh <path/to/directory/config.sh>
 ```
 Alternatively, you can run each script separately as follows:
 
-1. Alignment.sh  
+**1. Alignment.sh**  
 To insure the alignment of all included genotype data to the same strand, taking the location of fastafile as an input (from config.sh).
 
 ```bash
 bash path/to/directory/Alignment.sh <path/to/directory/config.sh>
 ```
 
-2. vcf to bcf  
+**2. vcf to bcf**  
 Converting and indexing VCF files to BCF format for the following phasing step.
 
 ```bash
 bash path/to/directory/VCF_BCF.sh <path/to/directory/config.sh>
 ```
 
-3. Phasing  
+**3. Phasing**  
 Phasing of the included genotype data
 ```bash
 bash path/to/directory/phase.sh <path/to/directory/config.sh>
 ```
 
-4. convert_refP  
+**4. convert_refP**  
 Before the first round of imputation, a msav format of the phased genotyped data needs to be prepared using the follwoing command:
 
 
 ```bash
 bash path/to/directory/convert_RefP.sh <path/to/directory/config.sh>
 ```
-5. minimac4.sh  
+**5. minimac4.sh**  
 Running the imputation for all included cohorts, each cohort is imputed against all other included cohorts, all the output imputation files are saved in the same pathway of the imputed cohorts
 
 ```bash
 bash path/to/directory/minimac4.sh <path/to/directory/config.sh>
 ```
 
-6. R_Input.sh  
+**6. R_Input.sh**  
 The script generates an info file for each imputed genotpe file (one info file for each chromosme per cohort), containing variant information including R2 imputation quality. This should by used by the following R-scripted algorithm for building the intermediate panel.
 
 ```bash
 bash path/to/directory/R_Input.sh <path/to/directory/config.sh>
 ```
 
-7. R_Command.sh  
+**7. R_Command.sh**  
 This file runs the R algorithm (SNP_Selection.R) over the generated imputed gentoype files in step 5, the output of the algorithm is one filterout variants, which filter out variants from the corresponding imputed outcomes, and keep list files, which includes the variants to be filtered out from other imputed files. 
 
 ```bash
 bash path/to/directory/R_Command.sh <path/to/directory/config.sh>
 ```
 
-8. VCF_Filter_Vcftools.sh  
+**8. VCF_Filter_Vcftools.sh**  
 This script uses VCFtools software to apply the filtration lists generated from the R-script to filter imputed genotype variants generated in step 5. 
 
 ```bash
 bash path/to/directory/VCF_Filter_Vcftools.sh <path/to/directory/config.sh>
 ```
 
-9. Merge_VCF_BCFtools.sh  
+**9. Merge_VCF_BCFtools.sh**   
 The last step is to merge all the filtered files for each cohort into one vcf file per chromosome, the merging process is performed using BCF tools.
 
 ```bash
