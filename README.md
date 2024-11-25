@@ -132,3 +132,8 @@ bash path/to/directory/Merge_VCF_BCFtools.sh <path/to/directory/config.sh>
 
 ## Outcome
 For each included cohort, an output folder is generated in the genotype data directory containg the intermediate panel files for autosomal chromosmes, ready to be used as an input for the second imputation using global reference panel (e.g. Michigan imputation server).
+
+## Citation
+If you find this workflow useful, please cite:
+
+[Nasr MK, König E, Fuchsberger C, Ghasemi S, Völker U, Völzke H, Grabe HJ, Teumer A. Removing array-specific batch effects in GWAS mega-analyses by applying a two-step imputation workflow reveals new associations for thyroid volume and goiter.](https://www.medrxiv.org/content/10.1101/2024.11.21.24317711v1)
