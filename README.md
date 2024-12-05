@@ -134,6 +134,27 @@ bash path/to/directory/Merge_VCF_BCFtools.sh <path/to/directory/config.sh>
 ## Outcome
 For each included cohort, an output folder is generated in the genotype data directory containg the intermediate panel files for autosomal chromosmes, ready to be used as an input for the second imputation using global reference panel (e.g. Michigan imputation server).
 
+Approximate runtime (hours) per step for 5 array types and 10k samples in total using a 2.8 GHz Xeon CPU. The number of parallel CPU cores used for phasing and imputation can be increased to reduce the runtime.
+
+Alignment: 2
+
+BCF conversion: 5.5
+
+phasing (12 cores): 5
+
+reference panel compression: 5
+
+first imputation (12 cores): 22
+
+Info files formation: 2
+
+R-scripted algorithm: 0.75
+
+VCF filtration: 3
+
+Merge VCF files: 3.5
+
+
 ## Citation
 If you find this workflow useful, please cite:
 
