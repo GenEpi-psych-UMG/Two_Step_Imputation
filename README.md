@@ -32,6 +32,7 @@ Clone the repository on your working directory, either by direct downlaod or usi
 ```bash
 git clone https://github.com/GenEpi-psych-UMG/Two_Step_Imputation.git
 ```
+The installation usually takes a few minutes. Taking into account the complexity of the genotype datasets to be imputed, the workflow should be installed on a linux server.
 
 The repository includes stepwise scripts for the imputation workflow which require no further edits, only two files need to be edited before starting the imputation:
 
