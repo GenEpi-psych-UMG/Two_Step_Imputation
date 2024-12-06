@@ -77,22 +77,22 @@ echo "Output_file= '$Output_file'"
 # Check if the filter file exists in the working directory
 if [ -r "${filter_file}" ]; then
     # If the file exists, run the first vcftools command
-    vcftools --gzvcf "${Input_file}" \
+    "$VCFtools" --gzvcf "${Input_file}" \
          --chr ${chr} \
          --positions "${filter_file}" \
          --recode \
          --out "${Output_file}_addon"
 bgzip -c "${Output_file}_addon.recode.vcf" > "${Output_file}_addon.recode.vcf.gz"
-tabix -p vcf "${Output_file}_addon.recode.vcf.gz"
+"$Tabix" -p vcf "${Output_file}_addon.recode.vcf.gz"
 else
     # If the file does not exist, run the alternative vcftools command
-        vcftools --gzvcf "${Input_file}" \
+        "$VCFtools" --gzvcf "${Input_file}" \
          --chr ${chr} \
          --exclude-positions "${target_pathway}/filterout_main_chr${chr}.txt" \
          --recode \
          --out "${Output_file}_kept"
 bgzip -c "${Output_file}_kept.recode.vcf" > "${Output_file}_kept.recode.vcf.gz"
-tabix -p vcf "${Output_file}_kept.recode.vcf.gz"
+"$Tabix" -p vcf "${Output_file}_kept.recode.vcf.gz"
 
 fi
 
