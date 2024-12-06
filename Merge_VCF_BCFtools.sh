@@ -95,7 +95,8 @@ starttime=`date +%s`
     echo "Not enough VCF files to concatenate for chromosome ${chr}. Skipping..."
     continue
   fi
-bcftools concat -a ${VCF_FILES_ARRAY[@]} -Oz -o "$Output_file"
+"$Bcftools" concat -a ${VCF_FILES_ARRAY[@]} -Oz -o "$Output_file"
+"$Tabix" -p vcf "$Output_file"
 
   # Check if bcftools concat succeeded
   if [ $? -ne 0 ]; then
