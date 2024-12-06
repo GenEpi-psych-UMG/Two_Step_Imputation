@@ -67,10 +67,10 @@ for i in "${!Cohorts[@]}"; do
       continue
     fi
 
-    bcftools view -c 1 -O b -o  "$output_bcf" "$input_vcf"
+    "$Bcftools" view -c 1 -O b -o  "$output_bcf" "$input_vcf"
 
 
-tabix -p vcf "$output_bcf"
+"$Tabix" -p vcf "$output_bcf"
 echo "chromosome $chr done"
 
     
