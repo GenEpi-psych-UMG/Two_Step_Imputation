@@ -66,7 +66,7 @@ echo "Ref_file= '$Ref_file'"
 echo "Output_file= '$Output_file'"
 
 # Run the minimac4 command
-        $minimac4 ${Ref_file} \
+        "$minimac4" ${Ref_file} \
                   ${Input_file} \
                   --output ${Output_file}.vcf.gz \
                   -f GT \
