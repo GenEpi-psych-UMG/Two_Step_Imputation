@@ -79,7 +79,7 @@ output_convert="${pathway}/${Cohort_prefix}_chr${chr}_phased_RefP.msav"
  --outPrefix "$output_phased" \
  --numThreads "$cpus" 
 
-tabix "$output_phased".vcf.gz
+"$Tabix" "$output_phased".vcf.gz
 
 # Check if bcftools was successful
     if [ $? -eq 0 ]; then
