@@ -1,0 +1,4 @@
+Cohort,Pathway,Prefix,Suffix
+Cohort_test_1,/daten/gtnas/users/nasrk/Imputation/Scripts/test/Cohort_test_1,test_cohort1_filtered_chr,.recode.vcf.gz
+Cohort_test_2,/daten/gtnas/users/nasrk/Imputation/Scripts/test/Cohort_test_2,test_cohort2_filtered_chr,.recode.vcf.gz
+Cohort_test_3,/daten/gtnas/users/nasrk/Imputation/Scripts/test/Cohort_test_3,test_cohort3_filtered_chr,.recode.vcf.gz
