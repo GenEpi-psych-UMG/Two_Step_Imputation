@@ -1,5 +1,5 @@
 // Process 5: IMPUTE
-// Impute genotypes using minimac4
+// Impute genotypes using minimac4 with reference panels created from other cohorts
 process IMPUTE {
     tag "${meta.id} (target: ${meta.target_cohort})"
     publishDir "${params.outdir}/${meta.cohort}/imputed/${meta.target_cohort}", mode: 'copy'
@@ -19,11 +19,12 @@ process IMPUTE {
     def output_prefix = "${meta.id}_imputed_${meta.target_cohort}"
     
     if (!ref_panel) {
-        error "Reference panel not found for chromosome ${meta.chr} and cohort ${meta.target_cohort}"
+        error "Reference panel not found for chromosome ${meta.chr} and cohort ${meta.target_cohort}. This reference panel should have been created in the CONVERT_REFP step."
     }
     
     """
     echo "Imputing ${meta.id} using reference panel from ${meta.target_cohort}"
+    echo "Reference panel file: ${ref_panel}"
     
     # Run minimac4 imputation
     minimac4 \

@@ -21,10 +21,13 @@ def printHeader() {
          Output Dir    : ${params.outdir}
          Ref FASTA     : ${params.fasta}
          Genetic Map   : ${params.gmap}
-         Eagle Path    : ${params.eagle}
-         Ref Panel VCF : ${params.ref_panel_m3vcf ?: 'Not Provided - REQUIRED for Imputation'}
          CPUs          : ${params.cpus}
          Minimac Rounds: ${params.rounds}
+         ===========================================
+         NOTE: This pipeline performs cross-imputation 
+         between cohorts. Each cohort is imputed using 
+         all other cohorts as reference panels.
+         Reference panels are created during the pipeline run.
          ===========================================
          """ .stripIndent()
 }
@@ -35,15 +38,12 @@ workflow {
     printHeader()
     
     // --- Validate Parameters ---
-    // Ensure required reference files and reference panel are specified
+    // Ensure required reference files exist
     if (!params.fasta || !file(params.fasta).exists()) {
         exit 1, "Reference FASTA file not found: ${params.fasta ?: 'parameter not set'}"
     }
     if (!params.gmap || !file(params.gmap).exists()) {
         exit 1, "Genetic Map file not found: ${params.gmap ?: 'parameter not set'}"
-    }
-    if (!params.ref_panel_m3vcf) {
-        exit 1, "Parameter 'params.ref_panel_m3vcf' (path/glob to reference panel m3vcf files) is required."
     }
 
     // --- Input Channel Creation ---
@@ -78,35 +78,6 @@ workflow {
         .flatMap() // Flatten the list of lists into individual [meta, vcf_path] emissions
         .filter { it != null } // Remove null entries where files didn't exist
         .ifEmpty { exit 1, "No input VCF files found based on ${params.cohorts_csv}. Please check paths and naming convention (e.g., path/prefixCHRsuffix)." }
-
-    // --- Reference Panel Channel ---
-    // Create a channel mapping chromosome to its reference panel file
-    ch_ref_panel_map = Channel.fromPath(params.ref_panel_m3vcf)
-        .map { file ->
-            // Extract chromosome from filename (handles chr1, chr22, chrX, chrY)
-            def matcher = file.getName() =~ /chr([0-9]+|[XY])/ 
-            if (!matcher) {
-                log.warn "Could not determine chromosome for reference panel file: ${file}. Expecting format like '...chr<NUM|X|Y>...'. Skipping."
-                return null
-            }
-            def chr = matcher[0][1]
-            log.info "Found reference panel VCF: ${file} for chr: ${chr}" 
-            return [ chr, file ] // Emit tuple [ chr, path ]
-        }
-        .filter { it != null } 
-        .groupTuple() // Group by chromosome
-        .map { chr, files -> 
-            if (files.size() > 1) {
-                log.warn "Multiple reference files found for chromosome ${chr}, using first one: ${files[0]}"
-            }
-            return [ chr, files[0] ] 
-        }
-        .toMap() // Collect into a map [chr: path]
-        .ifEmpty { exit 1, "No reference panel m3vcf files found matching glob: ${params.ref_panel_m3vcf}" }
-
-    // For now, just view the inputs to verify the channels are working
-    ch_input_vcfs.view{ meta, vcf -> "Input VCF: ${meta.id}, ${vcf}" }
-    ch_ref_panel_map.view{ chr, file -> "Reference Panel: chr${chr}, ${file}" }
 
     // Pipeline steps
     ALIGNMENT(ch_input_vcfs)

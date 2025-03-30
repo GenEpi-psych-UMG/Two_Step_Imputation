@@ -1,3 +1,5 @@
 Cohort,Pathway,Prefix,Suffix
-Cohort_A,bath/to/directory,Cohort_A_chr,.vcf.gz
+Cohort_test_1,${baseDir}/Cohort_test/Cohort_test_1,chr,.vcf.gz
+Cohort_test_2,${baseDir}/Cohort_test/Cohort_test_2,chr,.vcf.gz
+Cohort_test_3,${baseDir}/Cohort_test/Cohort_test_3,chr,.vcf.gz
 
