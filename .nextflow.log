@@ -1,0 +1,718 @@
+Mar-30 15:38:06.218 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf
+Mar-30 15:38:06.354 [main] DEBUG nextflow.cli.CmdRun - N E X T F L O W  ~  version 24.10.5
+Mar-30 15:38:06.396 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/codespace/.nextflow/plugins; core-plugins: nf-amazon@2.9.2,nf-azure@1.10.2,nf-cloudcache@0.4.2,nf-codecommit@0.2.2,nf-console@1.1.4,nf-google@1.15.4,nf-tower@1.9.3,nf-wave@1.7.4
+Mar-30 15:38:06.446 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Mar-30 15:38:06.451 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Mar-30 15:38:06.461 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+Mar-30 15:38:06.494 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Mar-30 15:38:06.543 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /workspaces/Two_Step_Imputation/nextflow.config
+Mar-30 15:38:06.547 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /workspaces/Two_Step_Imputation/nextflow.config
+Mar-30 15:38:06.616 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /home/codespace/.nextflow/secrets/store.json
+Mar-30 15:38:06.626 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@1f12e153] - activable => nextflow.secret.LocalSecretsProvider@1f12e153
+Mar-30 15:38:06.638 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Mar-30 15:38:07.743 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declaration
+Mar-30 15:38:07.771 [main] DEBUG nextflow.cli.CmdRun - Launching `main.nf` [backstabbing_woese] DSL2 - revision: cd12e8f8d2
+Mar-30 15:38:07.774 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Mar-30 15:38:07.775 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Mar-30 15:38:07.854 [main] DEBUG nextflow.Session - Session UUID: 87ea1697-15a4-410c-85b1-cfa1c965f53a
+Mar-30 15:38:07.855 [main] DEBUG nextflow.Session - Run name: backstabbing_woese
+Mar-30 15:38:07.856 [main] DEBUG nextflow.Session - Executor pool size: 2
+Mar-30 15:38:07.867 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Mar-30 15:38:07.876 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=10; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+Mar-30 15:38:07.915 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 24.10.5 build 5935
+  Created: 04-03-2025 17:55 UTC 
+  System: Linux 6.8.0-1021-azure
+  Runtime: Groovy 4.0.23 on OpenJDK 64-Bit Server VM 21.0.6+7-LTS
+  Encoding: UTF-8 (UTF-8)
+  Process: 50123@codespaces-874781 [127.0.0.1]
+  CPUs: 2 - Mem: 7.8 GB (266.5 MB) - Swap: 0 (0)
+Mar-30 15:38:07.960 [main] DEBUG nextflow.Session - Work-dir: /workspaces/Two_Step_Imputation/work [ext2/ext3]
+Mar-30 15:38:07.962 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /workspaces/Two_Step_Imputation/bin
+Mar-30 15:38:07.974 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Mar-30 15:38:07.989 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Mar-30 15:38:08.046 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Mar-30 15:38:08.060 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 3; maxThreads: 1000
+Mar-30 15:38:08.135 [main] DEBUG nextflow.Session - Session start
+Mar-30 15:38:08.139 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /workspaces/Two_Step_Imputation_Results/pipeline_info/trace.txt
+Mar-30 15:38:09.374 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Mar-30 15:38:10.482 [main] INFO  nextflow.Nextflow - 
+Two Step Imputation Pipeline - Nextflow
+===========================================
+Cohorts CSV   : /workspaces/Two_Step_Imputation/Cohorts_Info.csv
+Output Dir    : /workspaces/Two_Step_Imputation/../Two_Step_Imputation_Results
+Ref FASTA     : /workspaces/Two_Step_Imputation/dependencies/human_g1k_v37.fasta.gz
+Genetic Map   : /workspaces/Two_Step_Imputation/dependencies/genetic_map_hg19.txt.gz
+CPUs          : 12
+Minimac Rounds: 5
+===========================================
+NOTE: This pipeline performs cross-imputation 
+between cohorts. Each cohort is imputed using 
+all other cohorts as reference panels.
+Reference panels are created during the pipeline run.
+===========================================
+
+Mar-30 15:38:10.772 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:ALIGNMENT|VCF_TO_BCF|MERGE_VCF` matches process ALIGNMENT
+Mar-30 15:38:10.800 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:10.801 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:10.809 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Mar-30 15:38:10.820 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=12; memory=7.8 GB; capacity=2; pollInterval=100ms; dumpInterval=5m
+Mar-30 15:38:10.824 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Mar-30 15:38:10.947 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:ALIGNMENT|VCF_TO_BCF|MERGE_VCF` matches process VCF_TO_BCF
+Mar-30 15:38:10.952 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:10.952 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:10.974 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PHASE` matches process PHASE
+Mar-30 15:38:10.979 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:10.982 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:10.997 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:IMPUTE|CONVERT_REFP` matches process CONVERT_REFP
+Mar-30 15:38:11.000 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:11.001 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:11.097 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:IMPUTE|CONVERT_REFP` matches process IMPUTE
+Mar-30 15:38:11.099 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:11.099 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:11.110 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PREPARE_R_INPUT|RUN_R_SELECT` matches process PREPARE_R_INPUT
+Mar-30 15:38:11.112 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:11.113 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:11.131 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:PREPARE_R_INPUT|RUN_R_SELECT` matches process RUN_R_SELECT
+Mar-30 15:38:11.133 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:11.134 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:11.150 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:FILTER_VCF` matches process FILTER_VCF
+Mar-30 15:38:11.151 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:11.152 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:11.173 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:ALIGNMENT|VCF_TO_BCF|MERGE_VCF` matches process MERGE_VCF
+Mar-30 15:38:11.177 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+Mar-30 15:38:11.178 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-30 15:38:11.184 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: PHASE, RUN_R_SELECT, MERGE_VCF, ALIGNMENT, VCF_TO_BCF, FILTER_VCF, PREPARE_R_INPUT, CONVERT_REFP, IMPUTE
+Mar-30 15:38:11.186 [main] DEBUG nextflow.Session - Igniting dataflow network (10)
+Mar-30 15:38:11.199 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > ALIGNMENT
+Mar-30 15:38:11.200 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > VCF_TO_BCF
+Mar-30 15:38:11.208 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > PHASE
+Mar-30 15:38:11.208 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > CONVERT_REFP
+Mar-30 15:38:11.209 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > IMPUTE
+Mar-30 15:38:11.209 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > PREPARE_R_INPUT
+Mar-30 15:38:11.210 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RUN_R_SELECT
+Mar-30 15:38:11.212 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > FILTER_VCF
+Mar-30 15:38:11.212 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MERGE_VCF
+Mar-30 15:38:11.215 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr1.recode.vcf.gz
+Mar-30 15:38:11.215 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_e1e8aec474198925: /workspaces/Two_Step_Imputation/./modules/impute.nf
+  Script_8a17acc1a9423a9a: /workspaces/Two_Step_Imputation/./modules/alignment.nf
+  Script_418245f4884ac8a0: /workspaces/Two_Step_Imputation/./modules/merge_vcf.nf
+  Script_1fe809969265cc49: /workspaces/Two_Step_Imputation/main.nf
+  Script_f3d456c34c734925: /workspaces/Two_Step_Imputation/./modules/run_r_select.nf
+  Script_06d8f9ecc18a9fa3: /workspaces/Two_Step_Imputation/./modules/filter_vcf.nf
+  Script_93238f33817a60b1: /workspaces/Two_Step_Imputation/./modules/phase.nf
+  Script_32c624ee834099c0: /workspaces/Two_Step_Imputation/./modules/vcf_to_bcf.nf
+  Script_ffa0c2a3eee522f5: /workspaces/Two_Step_Imputation/./modules/prepare_r_input.nf
+  Script_5ef0f073461a3bcc: /workspaces/Two_Step_Imputation/./modules/convert_refp.nf
+Mar-30 15:38:11.217 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Mar-30 15:38:11.217 [main] DEBUG nextflow.Session - Session await
+Mar-30 15:38:11.217 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr2.recode.vcf.gz
+Mar-30 15:38:11.218 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr3.recode.vcf.gz
+Mar-30 15:38:11.219 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr4.recode.vcf.gz
+Mar-30 15:38:11.219 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr5.recode.vcf.gz
+Mar-30 15:38:11.220 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr6.recode.vcf.gz
+Mar-30 15:38:11.220 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr7.recode.vcf.gz
+Mar-30 15:38:11.221 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr8.recode.vcf.gz
+Mar-30 15:38:11.221 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr9.recode.vcf.gz
+Mar-30 15:38:11.222 [Actor Thread 1] INFO  nextflow.Nextflow - Found input VCF: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr10.recode.vcf.gz
+Mar-30 15:38:11.223 [Actor Thread 1] INFO  nextflow.Nextflow - Found input VCF: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr11.recode.vcf.gz
+Mar-30 15:38:11.223 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr12.recode.vcf.gz
+Mar-30 15:38:11.224 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr13.recode.vcf.gz
+Mar-30 15:38:11.225 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr14.recode.vcf.gz
+Mar-30 15:38:11.225 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr15.recode.vcf.gz
+Mar-30 15:38:11.226 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr16.recode.vcf.gz
+Mar-30 15:38:11.227 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr17.recode.vcf.gz
+Mar-30 15:38:11.227 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr18.recode.vcf.gz
+Mar-30 15:38:11.228 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr19.recode.vcf.gz
+Mar-30 15:38:11.229 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr20.recode.vcf.gz
+Mar-30 15:38:11.230 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr21.recode.vcf.gz
+Mar-30 15:38:11.230 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_1/test_cohort1_filtered_chr22.recode.vcf.gz
+Mar-30 15:38:11.233 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr1.recode.vcf.gz
+Mar-30 15:38:11.233 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr2.recode.vcf.gz
+Mar-30 15:38:11.235 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr3.recode.vcf.gz
+Mar-30 15:38:11.237 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr4.recode.vcf.gz
+Mar-30 15:38:11.239 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr5.recode.vcf.gz
+Mar-30 15:38:11.239 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr6.recode.vcf.gz
+Mar-30 15:38:11.240 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr7.recode.vcf.gz
+Mar-30 15:38:11.241 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr8.recode.vcf.gz
+Mar-30 15:38:11.242 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr9.recode.vcf.gz
+Mar-30 15:38:11.243 [Actor Thread 1] INFO  nextflow.Nextflow - Found input VCF: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr10.recode.vcf.gz
+Mar-30 15:38:11.246 [Actor Thread 1] INFO  nextflow.Nextflow - Found input VCF: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr11.recode.vcf.gz
+Mar-30 15:38:11.246 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr12.recode.vcf.gz
+Mar-30 15:38:11.247 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr13.recode.vcf.gz
+Mar-30 15:38:11.248 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr14.recode.vcf.gz
+Mar-30 15:38:11.248 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr15.recode.vcf.gz
+Mar-30 15:38:11.249 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr16.recode.vcf.gz
+Mar-30 15:38:11.251 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr17.recode.vcf.gz
+Mar-30 15:38:11.256 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr18.recode.vcf.gz
+Mar-30 15:38:11.256 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr19.recode.vcf.gz
+Mar-30 15:38:11.256 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr20.recode.vcf.gz
+Mar-30 15:38:11.259 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr21.recode.vcf.gz
+Mar-30 15:38:11.259 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_2/test_cohort2_filtered_chr22.recode.vcf.gz
+Mar-30 15:38:11.262 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr1.recode.vcf.gz
+Mar-30 15:38:11.264 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr2.recode.vcf.gz
+Mar-30 15:38:11.264 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr3.recode.vcf.gz
+Mar-30 15:38:11.266 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr4.recode.vcf.gz
+Mar-30 15:38:11.268 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr5.recode.vcf.gz
+Mar-30 15:38:11.268 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr6.recode.vcf.gz
+Mar-30 15:38:11.271 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr7.recode.vcf.gz
+Mar-30 15:38:11.271 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr8.recode.vcf.gz
+Mar-30 15:38:11.272 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr9.recode.vcf.gz
+Mar-30 15:38:11.274 [Actor Thread 1] INFO  nextflow.Nextflow - Found input VCF: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr10.recode.vcf.gz
+Mar-30 15:38:11.275 [Actor Thread 1] INFO  nextflow.Nextflow - Found input VCF: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr11.recode.vcf.gz
+Mar-30 15:38:11.276 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr12.recode.vcf.gz
+Mar-30 15:38:11.278 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr13.recode.vcf.gz
+Mar-30 15:38:11.279 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr14.recode.vcf.gz
+Mar-30 15:38:11.280 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr15.recode.vcf.gz
+Mar-30 15:38:11.280 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr16.recode.vcf.gz
+Mar-30 15:38:11.281 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr17.recode.vcf.gz
+Mar-30 15:38:11.282 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr18.recode.vcf.gz
+Mar-30 15:38:11.284 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr19.recode.vcf.gz
+Mar-30 15:38:11.284 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr20.recode.vcf.gz
+Mar-30 15:38:11.285 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr21.recode.vcf.gz
+Mar-30 15:38:11.285 [Actor Thread 1] WARN  nextflow.Nextflow - Input VCF not found, skipping: /workspaces/Two_Step_Imputation/Cohort_test/Cohort_test_3/test_cohort3_filtered_chr22.recode.vcf.gz
+Mar-30 15:38:11.323 [Actor Thread 7] ERROR nextflow.extension.OperatorImpl - @unknown
+groovy.lang.MissingMethodException: No signature of method: Script_1fe809969265cc49$_runScript_closure1$_closure2$_closure8.call() is applicable for argument types: (LinkedList) values: [[Cohort_test_1, Cohort_test_2, Cohort_test_3, Cohort_test_1]]
+Possible solutions: any(), any(), any(groovy.lang.Closure), each(groovy.lang.Closure), tap(groovy.lang.Closure), any(groovy.lang.Closure)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:271)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:790)
+	at groovy.lang.GroovyObject.invokeMethod(GroovyObject.java:39)
+	at org.codehaus.groovy.vmplugin.v8.IndyGuardsFiltersAndSignatures.invokeGroovyObjectInvoker(IndyGuardsFiltersAndSignatures.java:151)
+	at org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+	at nextflow.extension.OperatorImpl$_filter_closure5.doCall(OperatorImpl.groovy:280)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:279)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at groovy.lang.Closure.call(Closure.java:433)
+	at groovyx.gpars.dataflow.operator.DataflowOperatorActor.startTask(DataflowOperatorActor.java:120)
+	at groovyx.gpars.dataflow.operator.DataflowOperatorActor.onMessage(DataflowOperatorActor.java:108)
+	at groovyx.gpars.actor.impl.SDAClosure$1.call(SDAClosure.java:43)
+	at groovyx.gpars.actor.AbstractLoopingActor.runEnhancedWithoutRepliesOnMessages(AbstractLoopingActor.java:293)
+	at groovyx.gpars.actor.AbstractLoopingActor.access$400(AbstractLoopingActor.java:30)
+	at groovyx.gpars.actor.AbstractLoopingActor$1.handleMessage(AbstractLoopingActor.java:93)
+	at groovyx.gpars.util.AsyncMessagingCore.run(AsyncMessagingCore.java:132)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Mar-30 15:38:11.369 [Actor Thread 7] DEBUG nextflow.Session - Session aborted -- Cause: No signature of method: Script_1fe809969265cc49$_runScript_closure1$_closure2$_closure8.call() is applicable for argument types: (LinkedList) values: [[Cohort_test_1, Cohort_test_2, Cohort_test_3, Cohort_test_1]]
+Possible solutions: any(), any(), any(groovy.lang.Closure), each(groovy.lang.Closure), tap(groovy.lang.Closure), any(groovy.lang.Closure)
+Mar-30 15:38:11.443 [Actor Thread 7] DEBUG nextflow.Session - The following nodes are still active:
+[process] ALIGNMENT
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] VCF_TO_BCF
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] PHASE
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] CONVERT_REFP
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] IMPUTE
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] PREPARE_R_INPUT
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] RUN_R_SELECT
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] FILTER_VCF
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+[process] MERGE_VCF
+  status=ACTIVE
+  port 0: (queue) OPEN  ; channel: -
+  port 1: (cntrl) -     ; channel: $
+
+Mar-30 15:38:11.443 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+Mar-30 15:38:11.450 [Actor Thread 7] DEBUG nextflow.Session - 
+Thread[#25,Actor Thread 2,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:410)
+  java.base@21.0.6/java.util.concurrent.LinkedTransferQueue$DualNode.await(LinkedTransferQueue.java:452)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue$Transferer.xferLifo(SynchronousQueue.java:194)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.xfer(SynchronousQueue.java:235)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:338)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1069)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#23,Actor Thread 1,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:410)
+  java.base@21.0.6/java.util.concurrent.LinkedTransferQueue$DualNode.await(LinkedTransferQueue.java:452)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue$Transferer.xferLifo(SynchronousQueue.java:194)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.xfer(SynchronousQueue.java:235)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:338)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1069)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#33,Actor Thread 6,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:410)
+  java.base@21.0.6/java.util.concurrent.LinkedTransferQueue$DualNode.await(LinkedTransferQueue.java:452)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue$Transferer.xferLifo(SynchronousQueue.java:194)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.xfer(SynchronousQueue.java:235)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:338)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1069)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#28,Task submitter,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.park(LockSupport.java:371)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(AbstractQueuedSynchronizer.java:519)
+  java.base@21.0.6/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:3780)
+  java.base@21.0.6/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java:3725)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1712)
+  app//nextflow.processor.TaskPollingMonitor.awaitTasks(TaskPollingMonitor.groovy:388)
+  app//nextflow.processor.TaskPollingMonitor.submitLoop(TaskPollingMonitor.groovy:412)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x000076134019b800.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x000076134032c000.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  java.base@21.0.6/jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(DirectMethodHandleAccessor.java:153)
+  java.base@21.0.6/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+  java.base@21.0.6/java.lang.reflect.Method.invoke(Method.java:580)
+  app//org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+  app//groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+  app//groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+  app//groovy.lang.MetaClassImpl.invokeMethodClosure(MetaClassImpl.java:1017)
+  app//groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1207)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+  app//groovy.lang.Closure.call(Closure.java:433)
+  app//groovy.lang.Closure.call(Closure.java:412)
+  app//groovy.lang.Closure.run(Closure.java:505)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#31,Actor Thread 4,5,main]
+  app//ch.artecat.grengine.load.DefaultTopCodeCache.getUpToDateCode(DefaultTopCodeCache.java:75)
+  app//ch.artecat.grengine.load.LayeredClassLoader.getTopLoader(LayeredClassLoader.java:251)
+  app//ch.artecat.grengine.load.LayeredClassLoader.loadMainClass(LayeredClassLoader.java:202)
+  app//ch.artecat.grengine.engine.LayeredEngine.loadMainClass(LayeredEngine.java:198)
+  app//ch.artecat.grengine.Grengine.loadMainClass(Grengine.java:679)
+  app//ch.artecat.grengine.BaseGrengine.load(BaseGrengine.java:538)
+  app//ch.artecat.grengine.BaseGrengine.create(BaseGrengine.java:735)
+  app//ch.artecat.grengine.BaseGrengine.run(BaseGrengine.java:1525)
+  app//ch.artecat.grengine.BaseGrengine.run(BaseGrengine.java:994)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400b2800.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613402d9000.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x000076134015b400.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340160000.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340160400.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340160000.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340468400.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x000076134015a800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskRun.getGlobalVars(TaskRun.groovy:949)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400b3c00.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613401b9800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340161c00.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskProcessor.getTaskGlobalVars(TaskProcessor.groovy:2309)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400b3c00.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340103800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskProcessor.createTaskHashKey(TaskProcessor.groovy:2209)
+  java.base@21.0.6/java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(DirectMethodHandle$Holder)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613401b9800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340161c00.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskProcessor.invokeTask(TaskProcessor.groovy:654)
+  app//nextflow.processor.InvokeTaskAdapter.call(InvokeTaskAdapter.groovy:52)
+  app//groovyx.gpars.dataflow.operator.DataflowOperatorActor.startTask(DataflowOperatorActor.java:120)
+  app//groovyx.gpars.dataflow.operator.ForkingDataflowOperatorActor.access$001(ForkingDataflowOperatorActor.java:35)
+  app//groovyx.gpars.dataflow.operator.ForkingDataflowOperatorActor$1.run(ForkingDataflowOperatorActor.java:58)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#34,Actor Thread 7,5,main]
+  java.base@21.0.6/java.lang.Thread.dumpThreads(Native Method)
+  java.base@21.0.6/java.lang.Thread.getAllStackTraces(Thread.java:2522)
+  app//nextflow.util.SysHelper.dumpThreads(SysHelper.groovy:188)
+  app//nextflow.Session.abort(Session.groovy:800)
+  java.base@21.0.6/java.lang.invoke.DirectMethodHandle$Holder.invokeVirtual(DirectMethodHandle$Holder)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613402d9c00.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613401c3800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.extension.DataflowHelper$1.onException(DataflowHelper.groovy:99)
+  app//groovyx.gpars.dataflow.operator.DataflowProcessor.fireOnException(DataflowProcessor.java:331)
+  app//groovyx.gpars.dataflow.operator.DataflowProcessor.reportError(DataflowProcessor.java:293)
+  app//groovyx.gpars.dataflow.operator.DataflowProcessorActor.reportException(DataflowProcessorActor.java:125)
+  app//groovyx.gpars.dataflow.operator.DataflowOperatorActor.startTask(DataflowOperatorActor.java:122)
+  app//groovyx.gpars.dataflow.operator.DataflowOperatorActor.onMessage(DataflowOperatorActor.java:108)
+  app//groovyx.gpars.actor.impl.SDAClosure$1.call(SDAClosure.java:43)
+  app//groovyx.gpars.actor.AbstractLoopingActor.runEnhancedWithoutRepliesOnMessages(AbstractLoopingActor.java:293)
+  app//groovyx.gpars.actor.AbstractLoopingActor.access$400(AbstractLoopingActor.java:30)
+  app//groovyx.gpars.actor.AbstractLoopingActor$1.handleMessage(AbstractLoopingActor.java:93)
+  app//groovyx.gpars.util.AsyncMessagingCore.run(AsyncMessagingCore.java:132)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#1,main,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.park(LockSupport.java:371)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(AbstractQueuedSynchronizer.java:519)
+  java.base@21.0.6/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:3780)
+  java.base@21.0.6/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java:3725)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1712)
+  app//nextflow.util.Barrier$_awaitCompletion_closure3.doCall(Barrier.groovy:92)
+  app//nextflow.util.Barrier$_awaitCompletion_closure3.call(Barrier.groovy)
+  app//nextflow.extension.Bolts.withLock(Bolts.groovy:337)
+  app//nextflow.extension.Bolts.withLock(Bolts.groovy)
+  app//nextflow.util.Barrier.awaitCompletion(Barrier.groovy:89)
+  app//nextflow.Session.await(Session.groovy:676)
+  app//nextflow.script.ScriptRunner.await(ScriptRunner.groovy:256)
+  app//nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:144)
+  app//nextflow.cli.CmdRun.run(CmdRun.groovy:376)
+  app//nextflow.cli.Launcher.run(Launcher.groovy:503)
+  app//nextflow.cli.Launcher.main(Launcher.groovy:658)
+
+Thread[#10,Finalizer,8,system]
+  java.base@21.0.6/java.lang.Object.wait0(Native Method)
+  java.base@21.0.6/java.lang.Object.wait(Object.java:366)
+  java.base@21.0.6/java.lang.Object.wait(Object.java:339)
+  java.base@21.0.6/java.lang.ref.NativeReferenceQueue.await(NativeReferenceQueue.java:48)
+  java.base@21.0.6/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:158)
+  java.base@21.0.6/java.lang.ref.NativeReferenceQueue.remove(NativeReferenceQueue.java:89)
+  java.base@21.0.6/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:173)
+
+Thread[#35,Actor Thread 8,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:410)
+  java.base@21.0.6/java.util.concurrent.LinkedTransferQueue$DualNode.await(LinkedTransferQueue.java:452)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue$Transferer.xferLifo(SynchronousQueue.java:194)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.xfer(SynchronousQueue.java:235)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:338)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1069)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#30,PathVisitor-1,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:410)
+  java.base@21.0.6/java.util.concurrent.LinkedTransferQueue$DualNode.await(LinkedTransferQueue.java:452)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue$Transferer.xferLifo(SynchronousQueue.java:194)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.xfer(SynchronousQueue.java:235)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:338)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1069)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#24,AnsiLogObserver,5,main]
+  java.base@21.0.6/java.lang.Object.wait0(Native Method)
+  java.base@21.0.6/java.lang.Object.wait(Object.java:366)
+  app//nextflow.trace.AnsiLogObserver.render0(AnsiLogObserver.groovy:185)
+  java.base@21.0.6/java.lang.invoke.DirectMethodHandle$Holder.invokeVirtual(DirectMethodHandle$Holder)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340361000.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  java.base@21.0.6/jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(DirectMethodHandleAccessor.java:154)
+  java.base@21.0.6/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+  java.base@21.0.6/java.lang.reflect.Method.invoke(Method.java:580)
+  app//org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+  app//groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+  app//groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+  app//groovy.lang.MetaClassImpl.invokeMethodClosure(MetaClassImpl.java:1017)
+  app//groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1207)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+  app//groovy.lang.Closure.call(Closure.java:433)
+  app//groovy.lang.Closure.call(Closure.java:412)
+  app//groovy.lang.Closure.run(Closure.java:505)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#9,Reference Handler,10,system]
+  java.base@21.0.6/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+  java.base@21.0.6/java.lang.ref.Reference.processPendingReferences(Reference.java:246)
+  java.base@21.0.6/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:208)
+
+Thread[#17,Notification Thread,9,system]
+
+Thread[#11,Signal Dispatcher,9,system]
+
+Thread[#32,Actor Thread 5,5,main]
+  java.base@21.0.6/jdk.internal.org.objectweb.asm.MethodWriter.visitVarInsn(MethodWriter.java:950)
+  java.base@21.0.6/jdk.internal.org.objectweb.asm.MethodVisitor.visitVarInsn(MethodVisitor.java:387)
+  java.base@21.0.6/java.lang.invoke.InnerClassLambdaMetafactory$ForwardingMethodGenerator.convertArgumentTypes(InnerClassLambdaMetafactory.java:548)
+  java.base@21.0.6/java.lang.invoke.InnerClassLambdaMetafactory$ForwardingMethodGenerator.generate(InnerClassLambdaMetafactory.java:515)
+  java.base@21.0.6/java.lang.invoke.InnerClassLambdaMetafactory.generateInnerClass(InnerClassLambdaMetafactory.java:336)
+  java.base@21.0.6/java.lang.invoke.InnerClassLambdaMetafactory.spinInnerClass(InnerClassLambdaMetafactory.java:286)
+  java.base@21.0.6/java.lang.invoke.InnerClassLambdaMetafactory.buildCallSite(InnerClassLambdaMetafactory.java:221)
+  java.base@21.0.6/java.lang.invoke.LambdaMetafactory.metafactory(LambdaMetafactory.java:341)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x0000761340103c00.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  java.base@21.0.6/java.lang.invoke.BootstrapMethodInvoker.invoke(BootstrapMethodInvoker.java:134)
+  java.base@21.0.6/java.lang.invoke.CallSite.makeSite(CallSite.java:316)
+  java.base@21.0.6/java.lang.invoke.MethodHandleNatives.linkCallSiteImpl(MethodHandleNatives.java:274)
+  java.base@21.0.6/java.lang.invoke.MethodHandleNatives.linkCallSite(MethodHandleNatives.java:264)
+  app//org.codehaus.groovy.classgen.asm.InvocationWriter.sortConstructors(InvocationWriter.java:657)
+  app//org.codehaus.groovy.classgen.asm.InvocationWriter.writeSpecialConstructorCall(InvocationWriter.java:644)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitConstructorCallExpression(AsmClassGenerator.java:1004)
+  app//org.codehaus.groovy.ast.expr.ConstructorCallExpression.visit(ConstructorCallExpression.java:45)
+  app//org.codehaus.groovy.classgen.asm.StatementWriter.writeExpressionStatement(StatementWriter.java:613)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitExpressionStatement(AsmClassGenerator.java:827)
+  app//org.codehaus.groovy.ast.stmt.ExpressionStatement.visit(ExpressionStatement.java:41)
+  app//org.codehaus.groovy.classgen.asm.StatementWriter.writeBlockStatement(StatementWriter.java:95)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitBlockStatement(AsmClassGenerator.java:752)
+  app//org.codehaus.groovy.ast.stmt.BlockStatement.visit(BlockStatement.java:72)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitStdMethod(AsmClassGenerator.java:611)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitConstructorOrMethod(AsmClassGenerator.java:546)
+  app//org.codehaus.groovy.ast.ClassCodeVisitorSupport.visitConstructor(ClassCodeVisitorSupport.java:105)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitConstructor(AsmClassGenerator.java:689)
+  app//org.codehaus.groovy.ast.ClassNode.visitContents(ClassNode.java:1122)
+  app//org.codehaus.groovy.ast.ClassCodeVisitorSupport.visitClass(ClassCodeVisitorSupport.java:52)
+  app//org.codehaus.groovy.classgen.AsmClassGenerator.visitClass(AsmClassGenerator.java:365)
+  app//org.codehaus.groovy.control.CompilationUnit$3.call(CompilationUnit.java:797)
+  app//org.codehaus.groovy.control.CompilationUnit$IPrimaryClassNodeOperation.doPhaseOperation(CompilationUnit.java:938)
+  app//org.codehaus.groovy.control.CompilationUnit.processPhaseOperations(CompilationUnit.java:692)
+  app//org.codehaus.groovy.control.CompilationUnit.compile(CompilationUnit.java:666)
+  app//ch.artecat.grengine.code.groovy.DefaultGroovyCompiler.compile(DefaultGroovyCompiler.java:229)
+  app//ch.artecat.grengine.load.DefaultTopCodeCache.getUpToDateCode(DefaultTopCodeCache.java:80)
+  app//ch.artecat.grengine.load.LayeredClassLoader.getTopLoader(LayeredClassLoader.java:251)
+  app//ch.artecat.grengine.load.LayeredClassLoader.loadMainClass(LayeredClassLoader.java:202)
+  app//ch.artecat.grengine.engine.LayeredEngine.loadMainClass(LayeredEngine.java:198)
+  app//ch.artecat.grengine.Grengine.loadMainClass(Grengine.java:679)
+  app//ch.artecat.grengine.BaseGrengine.load(BaseGrengine.java:538)
+  app//ch.artecat.grengine.BaseGrengine.create(BaseGrengine.java:735)
+  app//ch.artecat.grengine.BaseGrengine.run(BaseGrengine.java:1525)
+  app//ch.artecat.grengine.BaseGrengine.run(BaseGrengine.java:994)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400b2800.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613402d9000.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x000076134015b400.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340160000.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340160400.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340160000.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340468400.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x000076134015a800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskRun.getGlobalVars(TaskRun.groovy:949)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400b3c00.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613401b9800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340161c00.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskProcessor.getTaskGlobalVars(TaskProcessor.groovy:2309)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400b3c00.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340103800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskProcessor.createTaskHashKey(TaskProcessor.groovy:2209)
+  java.base@21.0.6/java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(DirectMethodHandle$Holder)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x00007613401b9800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102000.guardWithCatch(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102c00.guard(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340102800.reinvoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340161c00.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  app//org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x00007613400aa400.invokeStatic(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x0000761340101800.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.linkToCallSite(Invokers$Holder)
+  app//nextflow.processor.TaskProcessor.invokeTask(TaskProcessor.groovy:654)
+  app//nextflow.processor.InvokeTaskAdapter.call(InvokeTaskAdapter.groovy:52)
+  app//groovyx.gpars.dataflow.operator.DataflowOperatorActor.startTask(DataflowOperatorActor.java:120)
+  app//groovyx.gpars.dataflow.operator.ForkingDataflowOperatorActor.access$001(ForkingDataflowOperatorActor.java:35)
+  app//groovyx.gpars.dataflow.operator.ForkingDataflowOperatorActor$1.run(ForkingDataflowOperatorActor.java:58)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#26,Actor Thread 3,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.park(LockSupport.java:221)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer.acquire(AbstractQueuedSynchronizer.java:754)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(AbstractQueuedSynchronizer.java:1099)
+  java.base@21.0.6/java.util.concurrent.Semaphore.acquire(Semaphore.java:318)
+  app//groovyx.gpars.dataflow.operator.ForkingDataflowOperatorActor.startTask(ForkingDataflowOperatorActor.java:50)
+  app//groovyx.gpars.dataflow.operator.DataflowOperatorActor.onMessage(DataflowOperatorActor.java:108)
+  app//groovyx.gpars.actor.impl.SDAClosure$1.call(SDAClosure.java:43)
+  app//groovyx.gpars.actor.AbstractLoopingActor.runEnhancedWithoutRepliesOnMessages(AbstractLoopingActor.java:293)
+  app//groovyx.gpars.actor.AbstractLoopingActor.access$400(AbstractLoopingActor.java:30)
+  app//groovyx.gpars.actor.AbstractLoopingActor$1.handleMessage(AbstractLoopingActor.java:93)
+  app//groovyx.gpars.util.AsyncMessagingCore.run(AsyncMessagingCore.java:132)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#16,Common-Cleaner,8,InnocuousThreadGroup]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:269)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1852)
+  java.base@21.0.6/java.lang.ref.ReferenceQueue.await(ReferenceQueue.java:71)
+  java.base@21.0.6/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:143)
+  java.base@21.0.6/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:218)
+  java.base@21.0.6/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:140)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+  java.base@21.0.6/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:186)
+
+Thread[#22,Thread-1,5,main]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:269)
+  java.base@21.0.6/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1763)
+  java.base@21.0.6/java.util.concurrent.LinkedBlockingDeque.pollFirst(LinkedBlockingDeque.java:515)
+  java.base@21.0.6/java.util.concurrent.LinkedBlockingDeque.poll(LinkedBlockingDeque.java:677)
+  app//nextflow.util.SimpleAgent.run(SimpleAgent.groovy:89)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$DMH/0x000076134019b800.invokeVirtual(LambdaForm$DMH)
+  java.base@21.0.6/java.lang.invoke.LambdaForm$MH/0x000076134032c000.invoke(LambdaForm$MH)
+  java.base@21.0.6/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+  java.base@21.0.6/jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(DirectMethodHandleAccessor.java:153)
+  java.base@21.0.6/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+  java.base@21.0.6/java.lang.reflect.Method.invoke(Method.java:580)
+  app//org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+  app//groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+  app//groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+  app//groovy.lang.MetaClassImpl.invokeMethodClosure(MetaClassImpl.java:1017)
+  app//groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1207)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+  app//groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+  app//groovy.lang.Closure.call(Closure.java:433)
+  app//groovy.lang.Closure.call(Closure.java:412)
+  app//groovy.lang.Closure.run(Closure.java:505)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+
+Thread[#21,process reaper,10,InnocuousThreadGroup]
+  java.base@21.0.6/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@21.0.6/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:410)
+  java.base@21.0.6/java.util.concurrent.LinkedTransferQueue$DualNode.await(LinkedTransferQueue.java:452)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue$Transferer.xferLifo(SynchronousQueue.java:194)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.xfer(SynchronousQueue.java:235)
+  java.base@21.0.6/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:338)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1069)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+  java.base@21.0.6/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+  java.base@21.0.6/java.lang.Thread.runWith(Thread.java:1596)
+  java.base@21.0.6/java.lang.Thread.run(Thread.java:1583)
+  java.base@21.0.6/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:186)
+
+Mar-30 15:38:11.459 [main] DEBUG nextflow.Session - Session await > all processes finished
+Mar-30 15:38:11.459 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Mar-30 15:38:11.471 [Actor Thread 3] DEBUG nextflow.processor.TaskProcessor - Handling unexpected condition for
+  task: name=ALIGNMENT; work-dir=null
+  error [java.lang.IllegalStateException]: Cannot obtain the semaphore to fork operator's body.
+Mar-30 15:38:11.473 [Actor Thread 11] DEBUG nextflow.processor.TaskProcessor - Handling unexpected condition for
+  task: name=RUN_R_SELECT; work-dir=null
+  error [java.lang.InterruptedException]: java.lang.InterruptedException
+Mar-30 15:38:11.473 [Actor Thread 9] DEBUG nextflow.processor.TaskProcessor - Handling unexpected condition for
+  task: name=FILTER_VCF; work-dir=null
+  error [java.lang.InterruptedException]: java.lang.InterruptedException
+Mar-30 15:38:11.488 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=0; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=0ms; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=0; peakCpus=0; peakMemory=0; ]
+Mar-30 15:38:11.489 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow completed -- saving trace file
+Mar-30 15:38:11.492 [Actor Thread 3] INFO  nextflow.conda.CondaCache - Creating env using conda: bioconda::bcftools=1.14 bioconda::htslib=1.14 [cache /workspaces/Two_Step_Imputation/conda/env-60fa47474ed92dbee41a673f7f9f2154]
+Mar-30 15:38:11.492 [main] DEBUG nextflow.trace.ReportObserver - Workflow completed -- rendering execution report
+Mar-30 15:38:13.107 [main] DEBUG nextflow.trace.TimelineObserver - Workflow completed -- rendering execution timeline
+Mar-30 15:38:13.248 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Mar-30 15:38:13.315 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
