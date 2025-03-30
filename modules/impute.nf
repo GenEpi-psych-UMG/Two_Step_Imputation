@@ -7,20 +7,13 @@ process IMPUTE {
     conda "bioconda::minimac4=4.1.4"
 
     input:
-    tuple val(meta), path(phased_vcf), path(phased_vcf_index)
-    val ref_panels_map
+    tuple val(meta), path(phased_vcf), path(phased_vcf_index), path(ref_panel)
 
     output:
     tuple val(meta), path("${meta.id}_imputed_${meta.target_cohort}.vcf.gz"), emit: imputed_vcf
 
     script:
-    def target_key = [chr: meta.chr, cohort: meta.target_cohort]
-    def ref_panel = ref_panels_map.get(target_key)
     def output_prefix = "${meta.id}_imputed_${meta.target_cohort}"
-    
-    if (!ref_panel) {
-        error "Reference panel not found for chromosome ${meta.chr} and cohort ${meta.target_cohort}. This reference panel should have been created in the CONVERT_REFP step."
-    }
     
     """
     echo "Imputing ${meta.id} using reference panel from ${meta.target_cohort}"

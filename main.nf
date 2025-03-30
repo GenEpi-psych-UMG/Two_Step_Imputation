@@ -122,7 +122,8 @@ workflow {
         }
     
     // Get reference panel files per chromosome and target cohort
-    ch_ref_panels = CONVERT_REFP.out.reference
+    // First, create a reusable reference panel channel
+    ch_ref_panels_all = CONVERT_REFP.out.reference
         .map { meta, msav -> 
             // Key: [chromosome, cohort]
             return [[chr: meta.chr, cohort: meta.cohort], msav]
@@ -134,10 +135,30 @@ workflow {
             }
             return [key, files[0]]
         }
-        .toMap() // Map with [chr:cohort] as key
+        .collect() // Collect all reference panels
+
+    // Cross-reference the reference panels with imputation inputs
+    ch_impute_with_ref = ch_impute_input
+        .combine(ch_ref_panels_all)
+        .map { meta, vcf, vcf_index, ref_panels -> 
+            // Find the matching reference panel for this imputation
+            def target_key = [chr: meta.chr, cohort: meta.target_cohort]
+            def matched_ref_panel = ref_panels.find { ref_key, ref_file -> 
+                ref_key.chr == target_key.chr && ref_key.cohort == target_key.cohort
+            }
+            
+            if (!matched_ref_panel) {
+                log.error "No reference panel found for ${meta.id} with target cohort ${meta.target_cohort}"
+                return null
+            }
+            
+            // Return input with matching reference panel
+            return [meta, vcf, vcf_index, matched_ref_panel[1]]
+        }
+        .filter { it != null }
     
-    // Combine input VCFs with corresponding reference panels
-    IMPUTE(ch_impute_input, ch_ref_panels)
+    // Run imputation with matched reference panels
+    IMPUTE(ch_impute_with_ref)
     
     // Extract info from imputed VCF files
     PREPARE_R_INPUT(IMPUTE.out.imputed_vcf)
