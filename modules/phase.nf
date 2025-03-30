@@ -4,8 +4,6 @@ process PHASE {
     tag "$meta.id"
     publishDir "${params.outdir}/${meta.cohort}/phased", mode: 'copy'
     
-    conda "bioconda::eagle=2.4.1 bioconda::htslib=1.14"
-
     input:
     tuple val(meta), path(bcf), path(bcf_index)
 

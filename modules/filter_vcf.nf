@@ -4,7 +4,7 @@ process FILTER_VCF {
     tag "${meta.id} (target: ${meta.target_cohort})"
     publishDir "${params.outdir}/${meta.cohort}/filtered/${meta.target_cohort}", mode: 'copy'
     
-    conda "bioconda::vcftools=0.1.17 bioconda::htslib=1.14"
+    conda "bioconda::vcftools=0.1.17"
 
     input:
     tuple val(meta), path(imputed_vcf), path(filter_lists)

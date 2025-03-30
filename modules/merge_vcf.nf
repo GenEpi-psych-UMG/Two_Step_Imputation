@@ -3,8 +3,6 @@
 process MERGE_VCF {
     tag "${meta.id}"
     publishDir "${params.outdir}/${meta.cohort}/merged", mode: 'copy'
-    
-    conda "bioconda::bcftools=1.14 bioconda::htslib=1.14"
 
     input:
     tuple val(meta), path(vcfs)

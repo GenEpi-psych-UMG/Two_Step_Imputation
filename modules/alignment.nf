@@ -3,8 +3,6 @@
 process ALIGNMENT {
     tag "$meta.id"
     publishDir "${params.outdir}/${meta.cohort}/alignment", mode: 'copy'
-    
-    conda "bioconda::bcftools=1.14 bioconda::htslib=1.14"
 
     input:
     tuple val(meta), path(vcf)

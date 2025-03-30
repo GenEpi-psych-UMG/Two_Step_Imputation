@@ -3,8 +3,6 @@
 process CONVERT_REFP {
     tag "$meta.id"
     publishDir "${params.outdir}/${meta.cohort}/reference_panel", mode: 'copy'
-    
-    conda "bioconda::minimac4=4.1.4"
 
     input:
     tuple val(meta), path(phased_vcf), path(phased_vcf_index)

@@ -3,8 +3,6 @@
 process IMPUTE {
     tag "${meta.id} (target: ${meta.target_cohort})"
     publishDir "${params.outdir}/${meta.cohort}/imputed/${meta.target_cohort}", mode: 'copy'
-    
-    conda "bioconda::minimac4=4.1.4"
 
     input:
     tuple val(meta), path(phased_vcf), path(phased_vcf_index), path(ref_panel)

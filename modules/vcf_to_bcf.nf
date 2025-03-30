@@ -3,8 +3,6 @@
 process VCF_TO_BCF {
     tag "$meta.id"
     publishDir "${params.outdir}/${meta.cohort}/bcf", mode: 'copy'
-    
-    conda "bioconda::bcftools=1.14 bioconda::htslib=1.14"
 
     input:
     tuple val(meta), path(vcf), path(vcf_index)
