@@ -126,8 +126,9 @@ workflow {
         .map { meta, msav -> 
             // Create a string key like "10_Cohort_test_1" for easy joining
             def key = "${meta.chr}_${meta.cohort}"
-            return [key, msav]
+            return [key, meta, msav]  // Include meta for debugging
         }
+        .view { key, meta, _msav -> "REF PANEL: ${key} - ${meta.id}" }
 
     // Cross-reference the reference panels with imputation inputs using join
     ch_impute_with_ref = ch_impute_input
@@ -136,11 +137,16 @@ workflow {
             def key = "${meta.chr}_${meta.target_cohort}"
             return [key, meta, vcf, vcf_index]
         }
-        .join(ch_ref_panels, failOnMismatch: false) // Join by key, allowing mismatches
-        .filter { it.size() == 5 } // Filter out any mismatches (join will return fewer elements)
-        .map { key, meta, vcf, vcf_index, ref_panel ->
+        .view { key, meta, _vcf, _vcf_index -> "IMPUTE REQUEST: ${key} - ${meta.id} targeting ${meta.target_cohort}" }
+        .combine(ch_ref_panels)  // Changed from join to combine
+        .filter { key1, _meta, _vcf, _vcf_index, key2, _ref_meta, _ref_panel ->
+            // Only keep combinations where the keys match (chr and target cohort)
+            return key1 == key2
+        }
+        .map { _key1, meta, vcf, vcf_index, _key2, _ref_meta, ref_panel ->
             return [meta, vcf, vcf_index, ref_panel]
         }
+        .view { meta, _vcf, _vcf_index, ref_panel -> "IMPUTE MATCH: ${meta.id} with reference ${ref_panel}" }
     
     // Run imputation with matched reference panels
     IMPUTE(ch_impute_with_ref)
@@ -150,10 +156,19 @@ workflow {
     
     // Group info files by cohort for R analysis
     ch_r_input = PREPARE_R_INPUT.out.info_files
+        .view { meta, info_file -> 
+            return "${meta.cohort} - ${info_file}"
+        }
         .map { meta, info_file -> 
             return [meta.cohort, meta, info_file]
         }
+        .view { _cohort, _meta, info_file -> 
+            return "${_cohort} - ${_meta.id} - ${info_file}"
+        }
         .groupTuple(by: 0)
+        .view { _cohort, _metaItems, _infoFiles -> 
+            return "${_cohort} - ${_metaItems.size()} files"
+        }
         .map { _cohort, _metaItems, infoFiles -> 
             // Create per-cohort list file with paths to all info files
             def meta = [
@@ -161,6 +176,9 @@ workflow {
                 cohort: _cohort
             ]
             return [meta, infoFiles]
+        }
+        .view { _meta, infoFiles -> 
+            return "${_meta.id} - ${infoFiles.size()} files"
         }
     
     // Run R script to select SNPs
@@ -180,18 +198,18 @@ workflow {
     
     // Group filtered VCFs by cohort and chromosome for merging
     ch_merge_input = FILTER_VCF.out.filtered_vcf
-        .filter { meta, _vcf -> meta != null && meta.cohort != null && meta.chr != null }  // <-- New filter to skip null meta
-        .map { meta, vcf -> 
-            return [ meta.cohort, meta.chr, meta, vcf ]
+        .filter { meta, _vcf, _index -> meta != null && meta.cohort != null && meta.chr != null }
+        .map { meta, vcf, index -> 
+            return [ meta.cohort, meta.chr, meta, vcf, index ]
         }
         .groupTuple(by: [0, 1]) // Group by [cohort, chr]
-        .map { _cohort, _chr, _metas, vcfs ->
+        .map { _cohort, _chr, _metas, vcfs, indices ->
             def meta = [
                 id: "${_cohort}_chr${_chr}_merged",
                 cohort: _cohort,
                 chr: _chr
             ]
-            return [ meta, vcfs ]
+            return [ meta, vcfs, indices ]
         }
     
     // Merge filtered VCFs from different reference cohorts for each chromosome

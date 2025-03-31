@@ -4,13 +4,13 @@ process FILTER_VCF {
     tag "${meta.id} (target: ${meta.target_cohort})"
     publishDir "${params.outdir}/${meta.cohort}/filtered/${meta.target_cohort}", mode: 'copy'
     
-    conda "bioconda::vcftools=0.1.17"
+    conda "bioconda::vcftools=0.1.16"
 
     input:
     tuple val(meta), path(imputed_vcf), path(filter_lists)
 
     output:
-    tuple val(meta), path("${meta.id}_imputed_${meta.target_cohort}_filtered.vcf.gz"), emit: filtered_vcf
+    tuple val(meta), path("${meta.id}_imputed_${meta.target_cohort}_filtered.vcf.gz"), path("${meta.id}_imputed_${meta.target_cohort}_filtered.vcf.gz.tbi"), emit: filtered_vcf
 
     script:
     def output_prefix = "${meta.id}_imputed_${meta.target_cohort}_filtered"
@@ -41,4 +41,4 @@ process FILTER_VCF {
     
     echo "VCF filtering completed for ${meta.id}"
     """
-} 
+}

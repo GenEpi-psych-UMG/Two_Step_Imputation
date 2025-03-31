@@ -5,7 +5,7 @@ process MERGE_VCF {
     publishDir "${params.outdir}/${meta.cohort}/merged", mode: 'copy'
 
     input:
-    tuple val(meta), path(vcfs)
+    tuple val(meta), path(vcfs), path(indices)
 
     output:
     tuple val(meta), path("${meta.id}_combined.vcf.gz"), path("${meta.id}_combined.vcf.gz.tbi"), emit: merged_vcf
@@ -17,6 +17,18 @@ process MERGE_VCF {
     """
     echo "Merging filtered VCF files for ${meta.id}"
     
+    # List all files in current directory for debugging
+    echo "Files in working directory:"
+    ls -la
+    
+    # Ensure all VCF files have index files
+    for vcf in ${vcf_list}; do
+        if [ ! -f "\${vcf}.tbi" ]; then
+            echo "Creating index for \${vcf}"
+            ${params.tabix} -p vcf \${vcf}
+        fi
+    done
+    
     # Merge VCF files using bcftools concat
     ${params.bcftools} concat -a ${vcf_list} -Oz -o ${output_prefix}.vcf.gz
     
@@ -25,4 +37,4 @@ process MERGE_VCF {
     
     echo "VCF merging completed for ${meta.id}"
     """
-} 
+}
