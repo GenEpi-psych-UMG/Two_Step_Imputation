@@ -19,7 +19,7 @@ process VCF_TO_BCF {
     bcftools view -c 1 -O b -o ${prefix}.bcf.gz ${vcf}
     
     # Index the output
-    bcftools -t ${prefix}.bcf.gz
+    tabix -p vcf ${prefix}.bcf.gz
     
     echo "BCF conversion completed for ${meta.id}"
     """
