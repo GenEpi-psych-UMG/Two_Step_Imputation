@@ -16,7 +16,7 @@ process PHASE {
     echo "Phasing ${bcf} with Eagle"
     
     # Run Eagle for phasing
-    eagle \
+    ${params.eagle} \
       --vcf ${bcf} \
       --Kpbwt=10000 \
       --pbwtIters=${params.rounds} \
@@ -26,7 +26,7 @@ process PHASE {
       --numThreads ${task.cpus}
     
     # Index the phased output
-    tabix -p vcf ${prefix}.vcf.gz
+    ${params.tabix} -p vcf ${prefix}.vcf.gz
     
     echo "Phasing completed for ${meta.id}"
     """

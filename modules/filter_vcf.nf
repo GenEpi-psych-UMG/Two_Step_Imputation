@@ -37,7 +37,7 @@ process FILTER_VCF {
     
     # Compress and index the output
     bgzip -c ${output_prefix}.recode.vcf > ${output_prefix}.vcf.gz
-    tabix -p vcf ${output_prefix}.vcf.gz
+    ${params.tabix} -p vcf ${output_prefix}.vcf.gz
     
     echo "VCF filtering completed for ${meta.id}"
     """

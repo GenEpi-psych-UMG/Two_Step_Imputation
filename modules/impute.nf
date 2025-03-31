@@ -18,7 +18,7 @@ process IMPUTE {
     echo "Reference panel file: ${ref_panel}"
     
     # Run minimac4 imputation
-    minimac4 \
+    ${params.minimac4} \
       ${ref_panel} \
       ${phased_vcf} \
       --output ${output_prefix}.vcf.gz \

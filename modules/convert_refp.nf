@@ -16,7 +16,7 @@ process CONVERT_REFP {
     echo "Converting ${phased_vcf} to Reference Panel format"
     
     # Convert to M3VCF format using minimac4
-    minimac4 --compress-reference ${phased_vcf} -o ${prefix}.msav
+    ${params.minimac4} --compress-reference ${phased_vcf} -o ${prefix}.msav
     
     echo "Reference Panel conversion completed for ${meta.id}"
     """

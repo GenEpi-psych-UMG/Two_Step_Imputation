@@ -49,15 +49,16 @@ workflow {
     // --- Input Channel Creation ---
     // Channel to read Cohorts_Info.csv and find input VCF files per chromosome
     ch_input_vcfs = Channel.fromPath(params.cohorts_csv)
-        .splitCsv(header:true, sep:',')
+        .splitCsv(header:true, sep:',') // each row is a list of named columns
         .map { row ->
             def cohort = row.Cohort
             def pathway = row.Pathway.trim()
             def prefix = row.Prefix.trim()
             def suffix = row.Suffix.trim()
-            // Generate chromosome list (1-22 and X)
-            def chromosomes = (1..22)
+            // Generate chromosome list (1-22)
+            def chromosomes = (10..11)
             // Create [meta, vcf_file] tuples for each existing VCF
+            // collect operator creates a list of tuples for each chromosome in the initiated list
             return chromosomes.collect { chr ->
                 def meta = [
                     id: "${cohort}_chr${chr}",
@@ -70,11 +71,16 @@ workflow {
                     log.info "Found input VCF: ${vcf_file}"
                     return [ meta, vcf_file ]
                 } else {
-                    log.warn "Input VCF not found, skipping: ${vcf_path}"
-                    return null // Return null if file doesn't exist
+                    return null
                 }
             }
         }
+        // output nested list of tuples created by the collect operator
+        //    [
+        //    [ tuple1, tuple2, ..., tuple22 ],  // For cohort1
+        //    [ tuple1, tuple2, ..., tuple22 ],  // For cohort2
+        //    [ tuple1, tuple2, ..., tuple22 ]   // For cohort3
+        //    ]
         .flatMap() // Flatten the list of lists into individual [meta, vcf_path] emissions
         .filter { it != null } // Remove null entries where files didn't exist
         .ifEmpty { exit 1, "No input VCF files found based on ${params.cohorts_csv}. Please check paths and naming convention (e.g., path/prefixCHRsuffix)." }
@@ -86,13 +92,11 @@ workflow {
     CONVERT_REFP(PHASE.out.phased_vcf)
     
     // Create imputation cohort combinations
-    // Extract unique cohorts from the input channel
     ch_cohorts = ch_input_vcfs
         .map { meta, _vcf -> meta.cohort }
         .unique()
         .collect()
         .map { cohorts -> 
-            // Generate all cohort pairs for cross-imputation (excluding self pairs)
             def pairs = []
             cohorts.eachWithIndex { source, i ->
                 cohorts.eachWithIndex { target, j ->
@@ -104,61 +108,39 @@ workflow {
             return pairs
         }
         .flatMap()
-    
+        
     // Combine phased VCFs with target cohorts for imputation
     ch_impute_input = PHASE.out.phased_vcf
         .combine(ch_cohorts)
-        .filter { meta, _vcf, _vcf_index, cohort_pair -> 
-            // Only keep pairs where the VCF cohort matches the source cohort in the pair
-            return meta.cohort == cohort_pair[0]
+        .filter { meta, _vcf, _vcf_index, source, _target ->
+            return meta.cohort == source
         }
-        .map { meta, vcf, vcf_index, cohort_pair -> 
-            // Convert to [meta with target, vcf]
-            def new_meta = meta.clone()
-            new_meta.target_cohort = cohort_pair[1]
-            return [new_meta, vcf, vcf_index]
+        .map { meta, vcf, vcf_index, _source, target ->
+            def meta_clone = meta.clone()
+            meta_clone.target_cohort = target
+            return [meta_clone, vcf, vcf_index]
         }
     
     // Get reference panel files per chromosome and target cohort
-    // First, create a reusable reference panel channel
-    ch_ref_panels_all = CONVERT_REFP.out.reference
+    ch_ref_panels = CONVERT_REFP.out.reference
         .map { meta, msav -> 
-            // Key: [chromosome, cohort]
-            return [[chr: meta.chr, cohort: meta.cohort], msav]
+            // Create a string key like "10_Cohort_test_1" for easy joining
+            def key = "${meta.chr}_${meta.cohort}"
+            return [key, msav]
         }
-        .groupTuple(by: 0)
-        .map { key, files -> 
-            if (files.size() > 1) {
-                log.warn "Multiple reference files found for chr ${key.chr} cohort ${key.cohort}, using first: ${files[0]}"
-            }
-            return [key, files[0]]
-        }
-        .collect() // Collect all reference panels
 
-    // Cross-reference the reference panels with imputation inputs
+    // Cross-reference the reference panels with imputation inputs using join
     ch_impute_with_ref = ch_impute_input
-        .combine(ch_ref_panels_all)
-        .map { meta, vcf, vcf_index, ref_panels -> 
-            // Find the matching reference panel for this imputation
-            def target_key = [chr: meta.chr, cohort: meta.target_cohort]
-            def matched_ref_panel = null
-            
-            // Find the matching reference panel in the collected list
-            ref_panels.each { ref_key, ref_file ->
-                if (ref_key.chr == target_key.chr && ref_key.cohort == target_key.cohort) {
-                    matched_ref_panel = ref_file
-                }
-            }
-            
-            if (matched_ref_panel == null) {
-                log.error "No reference panel found for ${meta.id} with target cohort ${meta.target_cohort}"
-                return null
-            }
-            
-            // Return input with matching reference panel
-            return [meta, vcf, vcf_index, matched_ref_panel]
+        .map { meta, vcf, vcf_index -> 
+            // Create the same format key based on target cohort
+            def key = "${meta.chr}_${meta.target_cohort}"
+            return [key, meta, vcf, vcf_index]
         }
-        .filter { it != null }
+        .join(ch_ref_panels, failOnMismatch: false) // Join by key, allowing mismatches
+        .filter { it.size() == 5 } // Filter out any mismatches (join will return fewer elements)
+        .map { key, meta, vcf, vcf_index, ref_panel ->
+            return [meta, vcf, vcf_index, ref_panel]
+        }
     
     // Run imputation with matched reference panels
     IMPUTE(ch_impute_with_ref)
@@ -185,19 +167,22 @@ workflow {
     RUN_R_SELECT(ch_r_input)
     
     // Prepare for VCF filtering
-    // We need to combine each imputed VCF with its corresponding filter list
     ch_filter_input = IMPUTE.out.imputed_vcf
-        .map { meta, vcf -> [meta.cohort, meta, vcf] }
-        .combine(RUN_R_SELECT.out.filter_lists.map { meta, list -> [meta.cohort, list] }, by: 0)
-        .map { _cohort, meta, vcf, filter_list -> [meta, vcf, filter_list] }
+        .filter { meta, _vcf -> meta != null && meta.cohort != null }           // <-- New filter ensuring meta is defined
+        .map { meta, vcf -> [ meta.cohort, meta, vcf ] }
+        .combine( RUN_R_SELECT.out.filter_lists
+            .filter { meta, _list -> meta != null && meta.cohort != null }     // <-- New filter in R channel
+            .map { meta, list -> [ meta.cohort, list ] }, by: 0)
+        .map { _cohort, meta, vcf, filter_list -> [ meta, vcf, filter_list ] }
     
     // Filter VCF files
     FILTER_VCF(ch_filter_input)
     
     // Group filtered VCFs by cohort and chromosome for merging
     ch_merge_input = FILTER_VCF.out.filtered_vcf
+        .filter { meta, _vcf -> meta != null && meta.cohort != null && meta.chr != null }  // <-- New filter to skip null meta
         .map { meta, vcf -> 
-            return [meta.cohort, meta.chr, meta, vcf]
+            return [ meta.cohort, meta.chr, meta, vcf ]
         }
         .groupTuple(by: [0, 1]) // Group by [cohort, chr]
         .map { _cohort, _chr, _metas, vcfs ->
@@ -206,9 +191,9 @@ workflow {
                 cohort: _cohort,
                 chr: _chr
             ]
-            return [meta, vcfs]
+            return [ meta, vcfs ]
         }
     
     // Merge filtered VCFs from different reference cohorts for each chromosome
     MERGE_VCF(ch_merge_input)
-} 
+}

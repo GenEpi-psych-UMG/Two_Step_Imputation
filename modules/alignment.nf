@@ -16,10 +16,10 @@ process ALIGNMENT {
     echo "Running Alignment for ${meta.id}"
     
     # Normalize and align VCF against reference
-    bcftools norm -c s -f ${params.fasta} -O z -o ${prefix}.vcf.gz ${vcf}
+    ${params.bcftools} norm -c s -f ${params.fasta} -O z -o ${prefix}.vcf.gz ${vcf}
     
     # Index the output
-    tabix -p vcf ${prefix}.vcf.gz
+    ${params.tabix} -p vcf ${prefix}.vcf.gz
     
     echo "Alignment completed for ${meta.id}"
     """

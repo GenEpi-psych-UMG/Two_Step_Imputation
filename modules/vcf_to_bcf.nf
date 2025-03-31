@@ -8,7 +8,7 @@ process VCF_TO_BCF {
     tuple val(meta), path(vcf), path(vcf_index)
 
     output:
-    tuple val(meta), path("${meta.id}.bcf.gz"), path("${meta.id}.bcf.gz.tbi"), emit: bcf
+    tuple val(meta), path("${meta.id}.bcf.gz"), path("${meta.id}.bcf.gz.csi"), emit: bcf
 
     script:
     def prefix = "${meta.id}"
@@ -16,11 +16,11 @@ process VCF_TO_BCF {
     echo "Converting ${vcf} to BCF format"
     
     # Convert to BCF with call filter (-c 1)
-    bcftools view -c 1 -O b -o ${prefix}.bcf.gz ${vcf}
+    ${params.bcftools} view -c 1 -O b -o ${prefix}.bcf.gz ${vcf}
     
-    # Index the output
-    tabix -p vcf ${prefix}.bcf.gz
+    # Index the output with bcftools index
+    ${params.bcftools} index -c ${prefix}.bcf.gz
     
     echo "BCF conversion completed for ${meta.id}"
     """
-} 
+}

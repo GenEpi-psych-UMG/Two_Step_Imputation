@@ -18,10 +18,10 @@ process MERGE_VCF {
     echo "Merging filtered VCF files for ${meta.id}"
     
     # Merge VCF files using bcftools concat
-    bcftools concat -a ${vcf_list} -Oz -o ${output_prefix}.vcf.gz
+    ${params.bcftools} concat -a ${vcf_list} -Oz -o ${output_prefix}.vcf.gz
     
     # Index the merged output
-    tabix -p vcf ${output_prefix}.vcf.gz
+    ${params.tabix} -p vcf ${output_prefix}.vcf.gz
     
     echo "VCF merging completed for ${meta.id}"
     """
