@@ -52,11 +52,11 @@ workflow {
         .splitCsv(header:true, sep:',')
         .map { row ->
             def cohort = row.Cohort
-            def pathway = row.Pathway.trim() // Trim potential whitespace
+            def pathway = row.Pathway.trim()
             def prefix = row.Prefix.trim()
             def suffix = row.Suffix.trim()
             // Generate chromosome list (1-22 and X)
-            def chromosomes = (1..22) + ['X']
+            def chromosomes = (1..22)
             // Create [meta, vcf_file] tuples for each existing VCF
             return chromosomes.collect { chr ->
                 def meta = [
