@@ -21,7 +21,10 @@ process RUN_R_SELECT {
     echo "Path\tReference\tchr" > ${info_files_list}
     
     # Loop through info files and add them with proper metadata
-    for file in ${info_files}; do
+    # Use while read loop for robustness
+    echo "${info_files}" | while IFS= read -r file; do
+        # Skip empty lines, if any
+        [ -z "\$file" ] && continue
         # Escape shell variables
         ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\.all.*/\\1/')
         chr=\$(echo \$file | sed -E 's/.*chr([0-9]+).*/\\1/')
@@ -37,7 +40,10 @@ process RUN_R_SELECT {
         echo "Creating dummy Keep_list files for missing chromosomes"
         
         # Extract all chromosomes from info files
-        for file in ${info_files}; do
+        # Use while read loop for robustness
+        echo "${info_files}" | while IFS= read -r file; do
+            # Skip empty lines, if any
+            [ -z "\$file" ] && continue
             # Escape shell variables
             chr=\$(echo \$file | sed -E 's/.*chr([0-9]+).*/\\1/')
             ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\.all.*/\\1/')
@@ -70,15 +76,15 @@ process RUN_R_SELECT {
     # Header for clarity
     echo -e "chr\ttype\tref_cohort\tfile_path" > output_manifest.tsv
     # Parse filenames to extract metadata and append to manifest
-    for f in *_chr*.txt; do
-        # Skip if file doesn't exist or is empty (e.g., from failed dummy creation)
-        # Escape shell variables
+    # Use find ... -print0 | while ... read for safer filename handling
+    # Ensure escaping for all shell variables (\$f, \$chr, \$ref_cohort, \$type, \$abs_path)
+    find . -maxdepth 1 -name '*_chr*.txt' -print0 | while IFS= read -r -d $'\0' f; do
+        # Skip if file doesn't exist or is empty (redundant with find but safe)
         [ ! -f "\$f" ] || [ ! -s "\$f" ] && continue
 
         # Escape shell variables
         chr=\$(echo "\$f" | grep -oP '_chr\K[0-9]+')
-        # Escape shell variables
-        if [[ "\$f" == Keep_list* ]]; then
+        if [[ "\$f" == *Keep_list* ]]; then # Use wildcard match
             type="keep"
             # Extract ref cohort AFTER the chromosome number
             # Escape shell variables
@@ -89,7 +95,7 @@ process RUN_R_SELECT {
                 ref_cohort="UNKNOWN_REF"
             fi
         # Escape shell variables
-        elif [[ "\$f" == filterout* ]]; then
+        elif [[ "\$f" == *filterout* ]]; then # Use wildcard match
             type="filterout"
             ref_cohort=""
         else
