@@ -166,10 +166,16 @@ workflow {
         .map { meta, _vcf -> meta.cohort }
         .unique()
         .collect()
+        .view { "Cohort Names: $it" }
 
     ch_imputation_pairs = ch_cohort_names
         .flatMap { cohorts ->
-            cohorts.combinations().findAll { it.size() == 2 }.collectMany { it + it.reverse() } // [A,B], [B,A]
+            cohorts.combinations().findAll { it.size() == 2 }.collectMany { 
+                def a = it[0]
+                def b = it[1]
+                // Create pairs in both directions [A,B] and [B,A]
+                return [[a, b], [b, a]]
+            }
         }
         .view { "Imputation Pair: Source ${it[0]}, Target ${it[1]}" }
 
@@ -177,6 +183,11 @@ workflow {
     ch_phased_vcfs_keyed = ch_phased_vcf_for_imputation
          .map { meta, vcf, index -> ["${meta.chr}_${meta.cohort}", meta, vcf, index] }
          .view { "Phased VCF Keyed: Key ${it[0]}, ID ${it[1].id}" }
+
+    // Enhance the phased_vcf channel to make it more accessible for joining
+    ch_phased_vcf_by_cohort = ch_phased_vcf_for_imputation
+        .map { meta, vcf, index -> [meta.cohort, meta, vcf, index] }
+        .view { "Phased VCF By Cohort: Cohort ${it[0]}, Chr ${it[1].chr}" }
 
     // --- Imputation Step (Conditional) ---
     if (params.imputer == 'minimac4') {
@@ -191,14 +202,24 @@ workflow {
         //    Join [Source, Target] pairs with phased VCF of Source
         //    Then join with Ref Panel of Target
         ch_impute_input_minimac4 = ch_imputation_pairs
-            .map { source, target -> ["${source}", source, target] } // Key by source
-            .join( ch_phased_vcf_for_imputation.map { m,v,i -> [m.cohort, m, v, i] }, by: 0 ) // Join source with its phased VCF
-            .map { _source_key, _source, target, meta_s, vcf_s, index_s ->
+            // Explicitly track the join process
+            .map { source, target -> 
+                log.info "Creating imputation job: Source=${source}, Target=${target}"
+                return [source, source, target] 
+            } 
+            .join(ch_phased_vcf_by_cohort, by: 0)
+            .map { cohort, _source, target, meta_s, vcf_s, index_s ->
                  def meta_impute = meta_s + [target_cohort: target] // Add target info
                  def ref_key = "${meta_s.chr}_${target}"          // Key to join with ref panel
+                 log.info "Found source data for ${cohort} chr${meta_s.chr}, looking for ref panel key: ${ref_key}"
                  return [ ref_key, meta_impute, vcf_s, index_s ]
             }
-            .join(ch_ref_panels_m3vcf, by: 0) // Join with target's ref panel
+            .join(ch_ref_panels_m3vcf, by: 0, remainder: true) // Add remainder:true to see unmatched keys
+            .view { k, m, v, i, r -> r == null ? 
+                "WARNING: No ref panel found for key: ${k}" : 
+                "Found matching ref panel for ${k}" 
+            }
+            .filter { k, m, v, i, r -> r != null } // Keep only the matched entries
             .map { _ref_key, meta_i, vcf_s, index_s, _meta_r, ref_panel ->
                  // Final input: [meta_for_imputation, source_vcf, source_index, ref_panel]
                  return [ meta_i, vcf_s, index_s, ref_panel ]
