@@ -11,12 +11,18 @@ process IMPUTE {
     tuple val(meta), path("${meta.id}_imputed_${meta.target_cohort}.vcf.gz"), emit: imputed_vcf
 
     script:
-    def output_prefix = "${meta.id}_imputed_${meta.target_cohort}"
-    
+    // Define output prefix here to use it in the output block
+    output_prefix = "${meta.id}_imputed_${meta.target_cohort}"
     """
-    echo "Imputing ${meta.id} using reference panel from ${meta.target_cohort}"
+    echo "Starting imputation for ${meta.id} (Target: ${meta.target_cohort}) using ${task.cpus} CPUs"
     echo "Reference panel file: ${ref_panel}"
-    
+    echo "Input VCF: ${phased_vcf}"
+
+    echo "Minimac4 Version:"
+    ${params.minimac4} --version
+    echo "Tabix Version:"
+    ${params.tabix} --version || true
+
     # Run minimac4 imputation
     ${params.minimac4} \
       ${ref_panel} \
