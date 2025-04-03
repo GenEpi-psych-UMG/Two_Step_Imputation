@@ -81,13 +81,13 @@ process RUN_R_SELECT {
         # Skip if file doesn't exist or is empty (redundant with find but safe)
         [ ! -f "\$f" ] || [ ! -s "\$f" ] && continue
 
-        # Escape shell variables
-        chr=\$(echo "\$f" | grep -oP '_chr\K[0-9]+')
+        # Escape shell variables - use sed instead of grep -oP
+        chr=\$(echo "\$f" | sed -E 's/.*_chr([0-9]+).*/\\1/')
         if [[ "\$f" == *Keep_list* ]]; then # Use wildcard match
             type="keep"
             # Extract ref cohort AFTER the chromosome number
-            # Escape shell variables
-            ref_cohort=\$(echo "\$f" | grep -oP "_chr\${chr}_\K[^.]+(?=\.txt)")
+            # Escape shell variables - use sed instead of grep -oP
+            ref_cohort=\$(echo "\$f" | sed -E "s/.*_chr\${chr}_([^.]+)\\.txt/\\1/")
             # Escape shell variables
             if [ -z "\$ref_cohort" ]; then
                 echo "Warning: Could not parse ref_cohort from keep list: \$f" >&2
