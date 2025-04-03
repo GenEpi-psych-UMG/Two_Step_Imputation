@@ -22,13 +22,10 @@ process RUN_R_SELECT {
     
     # Loop through info files and add them with proper metadata
     for file in ${info_files}; do
-        # Extract reference cohort from filename (between "imputed_" and ".all")
+        # Escape shell variables
         ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\.all.*/\\1/')
-        
-        # Extract chromosome number from filename
         chr=\$(echo \$file | sed -E 's/.*chr([0-9]+).*/\\1/')
-        
-        # Add entry to info_files_list.txt
+        # Escape shell variables in echo command
         echo -e "\${file}\t\${ref_cohort}\t\${chr}" >> ${info_files_list}
     done
     
