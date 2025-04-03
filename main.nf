@@ -169,7 +169,7 @@ workflow {
 
     ch_imputation_pairs = ch_cohort_names
         .flatMap { cohorts ->
-            cohorts.combinations(2).collectMany { it + it.reverse() } // [A,B], [B,A]
+            cohorts.combinations().findAll { it.size() == 2 }.collectMany { it + it.reverse() } // [A,B], [B,A]
         }
         .view { "Imputation Pair: Source ${it[0]}, Target ${it[1]}" }
 
