@@ -21,12 +21,11 @@ process RUN_R_SELECT {
     echo "Path\tReference\tchr" > ${info_files_list}
     
     # Loop through info files and add them with proper metadata
-    # Use while read loop for robustness
-    echo "${info_files}" | while IFS= read -r file; do
+    for file in ${info_files}; do
         # Skip empty lines, if any
         [ -z "\$file" ] && continue
         # Escape shell variables
-        ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\.all.*/\\1/')
+        ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\\.all.*/\\1/')
         chr=\$(echo \$file | sed -E 's/.*chr([0-9]+).*/\\1/')
         # Escape shell variables in echo command
         echo -e "\${file}\t\${ref_cohort}\t\${chr}" >> ${info_files_list}
@@ -40,13 +39,12 @@ process RUN_R_SELECT {
         echo "Creating dummy Keep_list files for missing chromosomes"
         
         # Extract all chromosomes from info files
-        # Use while read loop for robustness
-        echo "${info_files}" | while IFS= read -r file; do
+        for file in ${info_files}; do
             # Skip empty lines, if any
             [ -z "\$file" ] && continue
             # Escape shell variables
             chr=\$(echo \$file | sed -E 's/.*chr([0-9]+).*/\\1/')
-            ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\.all.*/\\1/')
+            ref_cohort=\$(echo \$file | sed -E 's/.*imputed_([^.]+)\\.all.*/\\1/')
             
             # Create a dummy file for each chromosome and reference
             # Escape shell variables
@@ -78,7 +76,8 @@ process RUN_R_SELECT {
     # Parse filenames to extract metadata and append to manifest
     # Use find ... -print0 | while ... read for safer filename handling
     # Ensure escaping for all shell variables (\$f, \$chr, \$ref_cohort, \$type, \$abs_path)
-    find . -maxdepth 1 -name '*_chr*.txt' -print0 | while IFS= read -r -d $'\0' f; do
+    find . -maxdepth 1 -name '*_chr*.txt' > found_files.txt
+    while read f; do
         # Skip if file doesn't exist or is empty (redundant with find but safe)
         [ ! -f "\$f" ] || [ ! -s "\$f" ] && continue
 
@@ -109,7 +108,7 @@ process RUN_R_SELECT {
         abs_path=\$(realpath "\$f")
         # Escape shell variables
         echo -e "\${chr}\t\${type}\t\${ref_cohort}\t\${abs_path}" >> output_manifest.tsv
-    done
+    done < found_files.txt
 
     # List the generated files for debugging
     echo "Generated files:"
