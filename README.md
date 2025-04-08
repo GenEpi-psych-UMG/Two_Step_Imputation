@@ -129,7 +129,12 @@ The last step is to merge all the filtered files for each cohort into one vcf fi
 ```bash
 bash path/to/directory/Merge_VCF_BCFtools.sh <path/to/directory/config.sh>
 ```
+**10. Merge_arrays.sh (OPTIONAL)**
+This optional step is only used if you want to merge the included cohorts before the second imputation step. This step is recommended in case the overall sample size for the included cohorts is relatively small (< 10000). Merging cohorts with larger sample size might not be feasible due to the limited capacities of the imputation servers.
 
+```bash
+bash path/to/directory/Merge_arrays.sh <path/to/directory/config.sh>
+```
 
 ## Outcome
 For each included cohort, an output folder is generated in the genotype data directory containg the intermediate panel files for autosomal chromosmes, ready to be used as an input for the second imputation using global reference panel (e.g. Michigan imputation server).
