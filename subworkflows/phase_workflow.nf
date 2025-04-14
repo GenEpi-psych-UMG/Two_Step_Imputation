@@ -24,7 +24,7 @@ workflow PHASE_WORKFLOW {
         
         ref_map_chr = gmapFinder(params.phaser, params.gmap_shapeit5)
         
-        ref_map_chr.view { "Genetic map file: ${it}" }
+        // ref_map_chr.view { "Genetic map file: ${it}" }
 
         ch_bcf_keyed = ch_bcf
                         .map { meta, bcf_file, bcf_index -> 

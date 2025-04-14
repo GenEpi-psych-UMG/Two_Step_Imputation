@@ -24,7 +24,7 @@ workflow IMPUTATION {
         ch_imputedVCFs = MINIMAC4.out.imputed_vcf
     } 
     else if (params.imputer == "beagle5") {
-        ch_java_memory = (params.memory =~ /(\d+)\s*GB/)[0][1].toInteger()
+        ch_java_memory = (params.memory =~ /(\d+)(?:\.?\s*GB)/)[0][1].toInteger()
         
         // For Beagle imputation
         CONVERT_REFP_BREF3(ch_phasedVCFs, ch_java_memory)
