@@ -16,7 +16,7 @@ process VCF_TO_BCF {
     echo "Converting ${vcf} to BCF format"
     
     # Convert to BCF with call filter (-c 1)
-    ${params.bcftools} view -c 1 -O b -o ${prefix}.bcf.gz ${vcf}
+    ${params.bcftools} view -c 1 -O b -o ${prefix}.bcf.gz ${vcf} --threads ${task.cpus}
     
     # Index the output with bcftools index
     ${params.bcftools} index -c ${prefix}.bcf.gz

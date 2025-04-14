@@ -14,10 +14,10 @@ process BCF_TO_VCF {
     tuple val(meta), path(bcf_file), path(bcf_index)
 
     output:
-    tuple val(meta), path("${meta.id}_converted.vcf.gz"), path("${meta.id}_converted.vcf.gz.tbi"), emit: converted_vcf
+    tuple val(meta), path("${meta.id}_phased_shapeit5.vcf.gz"), path("${meta.id}_phased_shapeit5.vcf.gz.tbi"), emit: converted_vcf
 
     script:
-    def output_vcf = "${meta.id}_converted.vcf.gz"
+    def output_vcf = "${meta.id}_phased_shapeit5.vcf.gz"
     """
     echo "Converting BCF ${bcf_file} to VCF.gz for ${meta.id}"
     bcftools --version

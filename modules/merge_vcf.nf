@@ -1,40 +1,65 @@
-// Process 9: MERGE_VCF
-// Merge all filtered VCF files for each chromosome
+#!/usr/bin/env nextflow
+nextflow.enable.dsl=2
+
+// modules/merge_vcf.nf
+// Merges filtered VCF files for a given cohort and chromosome
+
 process MERGE_VCF {
-    tag "${meta.id}"
-    publishDir "${params.outdir}/${meta.cohort}/merged", mode: 'copy'
+    // Use task.ext to make cohort/chr available outside script block
+    // beforeScript '''
+    // task.ext.cohort = cohort_chr_id[0]
+    // task.ext.chr = cohort_chr_id[1]
+    // '''
+
+    tag "${meta.id}(${filtered_vcfs.size()} paritions)"
+    publishDir "${params.outdir}/${meta.cohort}/merged_vcfs", mode: 'copy'
 
     input:
-    tuple val(meta), path(vcfs), path(indices)
+    tuple val(meta), path(filtered_vcfs)
 
     output:
-    tuple val(meta), path("${meta.id}_combined.vcf.gz"), path("${meta.id}_combined.vcf.gz.tbi"), emit: merged_vcf
+    tuple val(meta), path("${meta.id}.merged.vcf.gz"), emit: merged_vcf
+    tuple val(meta), path("${meta.id}.merged.vcf.gz.tbi"), emit: merged_idx
 
     script:
-    def output_prefix = "${meta.id}_combined"
-    // Create a space-separated list of VCF files
-    def vcf_list = vcfs.join(" ")
+    // Use task.ext here as well
+    def file_list = "files_to_merge.txt"
+    def out_vcf = "${meta.id}.merged.vcf.gz"
+
     """
-    echo "Merging filtered VCF files for ${meta.id}"
-    
-    # List all files in current directory for debugging
-    echo "Files in working directory:"
-    ls -la
-    
-    # Ensure all VCF files have index files
-    for vcf in ${vcf_list}; do
-        if [ ! -f "\${vcf}.tbi" ]; then
-            echo "Creating index for \${vcf}"
-            ${params.tabix} -p vcf \${vcf}
-        fi
+    #!/bin/bash
+    set -euo pipefail
+
+    echo "Merging ${filtered_vcfs.size()} VCF(s) for ${meta.cohort} chromosome ${meta.chr}"
+
+    # Create a file listing the VCFs to merge
+    for vcf_file in ${filtered_vcfs.join(' ')}; do
+        readlink -f "\$vcf_file" >> ${file_list}
     done
-    
-    # Merge VCF files using bcftools concat
-    ${params.bcftools} concat -a ${vcf_list} -Oz -o ${output_prefix}.vcf.gz
-    
-    # Index the merged output
-    ${params.tabix} -p vcf ${output_prefix}.vcf.gz
-    
-    echo "VCF merging completed for ${meta.id}"
+
+    if [ ! -s ${file_list} ]; then
+        echo "Error: No filtered VCF files found or listed in '${file_list}' for ${meta.cohort} chromosome ${meta.chr}." >&2
+        exit 1
+    fi
+
+    echo "File list for merging (${file_list}):"
+    cat ${file_list}
+
+    ${params.bcftools} concat \
+        --allow-overlaps \
+        --file-list ${file_list} \
+        -Oz -o ${out_vcf}
+
+    echo "Indexing merged file: ${out_vcf}"
+    ${params.tabix} -p vcf ${out_vcf}
     """
+
+    // stub:
+    // // Use task.ext here too
+    // """
+    // #!/bin/bash
+    // echo "Stub MERGE_VCF for ${task.ext.cohort} chr ${task.ext.chr}"
+    // touch ${task.ext.cohort}_chr${task.ext.chr}.merged.vcf.gz
+    // touch ${task.ext.cohort}_chr${task.ext.chr}.merged.vcf.gz.tbi
+    // """
 }

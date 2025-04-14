@@ -1,56 +1,45 @@
-// Process 8: FILTER_VCF
-// Filter imputed VCF files based on R output
+#!/usr/bin/env nextflow
+nextflow.enable.dsl=2
+
+// modules/filter_vcf.nf
+// Filters imputed VCFs based on keeplist or filterout list
+
 process FILTER_VCF {
-    tag "${meta.id} (target: ${meta.target_cohort})"
-    publishDir "${params.outdir}/${meta.cohort}/filtered/${meta.target_cohort}", mode: 'copy'
-    
-    conda "bioconda::vcftools=0.1.16"
-
+    tag "$meta.id"
+    publishDir "${params.outdir}/${meta.cohort}/filtered_vcfs", mode: 'copy'  
+                    
     input:
-    tuple val(meta), path(imputed_vcf), path(filterout_list), path(keep_list)
-
-    output:
-    tuple val(meta), path("${meta.id}_imputed_${meta.target_cohort}_filtered.vcf.gz"), path("${meta.id}_imputed_${meta.target_cohort}_filtered.vcf.gz.tbi"), emit: filtered_vcf
-
+    tuple val(meta), path(imputed_vcf), path(filter_list) // meta e.g., [id:"cohortA_chr1_imputed_cohortB", cohort:"cohortA", ref:"cohortB", chr:1]
+    // filter_list is EITHER keeplist_cohortB.txt OR filterout_cohortC.txt (or similar)
+    
+    output:    
+    tuple val(meta), path("*.recode.vcf.gz"), emit: filtered_vcf    
+    tuple val(meta), path("*.recode.vcf.gz.tbi"), optional:true, emit: filtered_idx    
+        
     script:
-    def output_prefix = "${meta.id}_imputed_${meta.target_cohort}_filtered"
-    def chr = meta.chr
+    // Define filter logic here where task context is available
+    def filter_list_name = filter_list.baseName
+    def filter_option = filter_list_name.startsWith('Selected_keeplist') ? "--positions ${filter_list}" : "--exclude-positions ${filter_list}"
+    def filter_type_suffix = filter_list_name.startsWith('Selected_keeplist') ? 'addon' : 'kept'
+    def out_filename = "${meta.id}_filtered_${meta.target_cohort}_${filter_type_suffix}.recode.vcf.gz"
+    
     """
-    echo "Filtering ${imputed_vcf}"
-    echo "Using Keep list: ${keep_list}"
-    echo "Using Filterout list: ${filterout_list}"
-
-    # Check if files exist
-    if [ ! -f "${keep_list}" ]; then
-        echo "Error: Keep list ${keep_list} not found!" >&2
-        exit 1
-    fi
-    if [ ! -f "${filterout_list}" ]; then
-        echo "Error: Filterout list ${filterout_list} not found!" >&2
-        exit 1
-    fi
-
-    # Filter VCF using both keep and exclude lists
-    vcftools --gzvcf ${imputed_vcf} \
-             --chr ${chr} \
-             --positions ${keep_list} \
-             --exclude-positions ${filterout_list} \
-             --recode \
-             --recode-INFO-all \
-             --out ${output_prefix}
-
-    # Compress and index the output
-    # Check if recode file exists and is not empty before compressing
-    if [ -s "${output_prefix}.recode.vcf" ]; then
-        bgzip -c ${output_prefix}.recode.vcf > ${output_prefix}.vcf.gz
-        ${params.tabix} -p vcf ${output_prefix}.vcf.gz
+    #!/bin/bash
+    set -euo pipefail
+    echo "Filtering ${imputed_vcf} using VCFtools with option: ${filter_option}"
+    
+    if [ ! -s "${filter_list}" ]; then        
+        echo "Warning: Filter list '${filter_list}' is empty or not found for ${meta.id}."    
+        
     else
-        echo "Error: Filtering produced an empty VCF file (${output_prefix}.recode.vcf). Check input lists and VCF." >&2
-        # Create empty outputs to satisfy Nextflow output expectations, but maybe signal error?
-        touch ${output_prefix}.vcf.gz ${output_prefix}.vcf.gz.tbi
-        # Optionally exit with an error: exit 1 
-    fi
-
-    echo "VCF filtering completed for ${meta.id}"
+        vcftools \
+        --gzvcf ${imputed_vcf} \
+        ${filter_option} \
+        --recode \
+        --recode-INFO-all \
+        --stdout | ${params.bgzip} -c > ${out_filename}
+        
+        tabix -p vcf ${out_filename}    
+    fi    
     """
 }

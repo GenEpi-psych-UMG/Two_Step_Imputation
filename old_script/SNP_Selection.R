@@ -54,7 +54,7 @@ for (i in unique(all_data$chr)) {
       Filter_out_main_info$chr <- sub("(\\d+):.*", "\\1", Filter_out_main_info$SNPID)
       Filter_out_main_info <- Filter_out_main_info[as.numeric(Filter_out_main_info$R2) < 0.9,] ##Threshold for imputation quality
       Filter_out_main <- subset(Filter_out_main_info, select = c("chr", "POS"))
-      write.table(Filter_out_main[,1:2], paste("Selected_filterout_main_chr", Filter_out_main$chr[1], "_", input$Reference[1],".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Filter_out_main[,1:2], paste("Selected_filterout_main_chr", Filter_out_main$chr[1], ".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
 
   }else {
     ##Read files
@@ -82,8 +82,8 @@ for (i in unique(all_data$chr)) {
       Filter_out_main$chr <- sub("(\\d+):.*", "\\1", Filter_out_main$SNPID)
       Filter_out_main <- subset(Filter_out_main, select = c("chr", "POS"))
       Filter_out_main$reference <- input[1,2]
-      write.table(Filter_out_main, paste("Summary_filterout_main_chr", Filter_out_main$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
-      write.table(Filter_out_main[,1:2], paste("Selected_filterout_main_chr", Filter_out_main$chr[1], "_", input$Reference[1],".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Filter_out_main, paste("Selected_filterout_main_chr", Filter_out_main$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Filter_out_main[,1:2], paste("Selected_filterout_main_chr", Filter_out_main$chr[1], ".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
       
       ##Select keep SNPs in the add-on SNP-list
       
@@ -99,8 +99,8 @@ for (i in unique(all_data$chr)) {
       
       Keep_list <- rbind(Unique_keep, addon_keep)
       Keep_list$reference <- input$Reference[2]
-      write.table(Keep_list, paste("Summary_keeplist_main_chr", Keep_list$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
-      write.table(Keep_list[,1:2], paste("Selected_keeplist_main_chr", Keep_list$chr[1],"_", input$Reference[2],".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Keep_list, paste("Selected_keep_list_main_chr", Keep_list$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Keep_list[,1:2], paste("Selected_keep_list_main_chr", Keep_list$chr[1],"_", input$Reference[2],".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
       
     }else {
       ##Create list of all add-on panels
@@ -155,8 +155,8 @@ for (i in unique(all_data$chr)) {
       Filter_out_main <- Filter_out_main[as.numeric(Filter_out_main$R2.y) >= 0.9,] ##Threshold for imputation quality
       Filter_out_main <- subset(Filter_out_main, select = c("chr", "POS", "Reference","Reference_main"))
       
-      write.table(Filter_out_main, paste("Summary_filterout_main_chr", Filter_out_main$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
-      write.table(Filter_out_main[,1:2], paste("Selected_filterout_main_chr", Filter_out_main$chr[1], "_", input$Reference[1],".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Filter_out_main, paste("Selected_filterout_main_chr", Filter_out_main$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Filter_out_main[,1:2], paste("Selected_filterout_main_chr", Filter_out_main$chr[1], ".txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
       
       
       ##Select keep SNPs in the add-on SNP-list
@@ -171,7 +171,7 @@ for (i in unique(all_data$chr)) {
         Reference = Addon_unique$Reference)
       
       Keep_list <- rbind(Unique_keep, addon_keep)
-      write.table(Keep_list, paste("Summary_keep_list_main_chr", Keep_list$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
+      write.table(Keep_list, paste("Selected_keep_list_main_chr", Keep_list$chr[1], "_with_reference.txt", sep = ""), row.names = F, col.names = F, quote = F, sep = "\t")
       ###Write SNP lists for each add-on panel
       unique_references <- unique(Keep_list$Reference)
       
