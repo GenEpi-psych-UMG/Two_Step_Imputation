@@ -19,7 +19,7 @@ process EAGLE2 {
     ${params.eagle2} \
       --vcf ${bcf} \
       --Kpbwt=10000 \
-      --pbwtIters=${params.rounds} \
+      --pbwtIters=${params.eagle2_rounds} \
       --geneticMapFile=${params.gmap_eagle2} \
       --vcfOutFormat=z \
       --outPrefix ${prefix} \
