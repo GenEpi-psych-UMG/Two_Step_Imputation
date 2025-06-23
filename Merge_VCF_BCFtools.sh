@@ -99,7 +99,7 @@ starttime=`date +%s`
 "$Tabix" -p vcf "$Output_file"
 
   # Check if bcftools concat succeeded
-  if [ $? -ne 0 ]; then
+  if [ $? -eq 0 ]; then
     echo "Concatenation done for chromosome ${chr}."
       else
       echo "Error: Concatenation failed for chromosome ${chr}."
