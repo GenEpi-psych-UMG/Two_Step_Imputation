@@ -163,4 +163,4 @@ Merge VCF files: 3.5
 ## Citation
 If you find this workflow useful, please cite:
 
-[Nasr MK, König E, Fuchsberger C, Ghasemi S, Völker U, Völzke H, Grabe HJ, Teumer A. Removing array-specific batch effects in GWAS mega-analyses by applying a two-step imputation workflow reveals new associations for thyroid volume and goiter.](https://www.medrxiv.org/content/10.1101/2024.11.21.24317711v1)
+[Nasr MK, König E, Fuchsberger C, Ghasemi S, Völker U, Völzke H, Grabe HJ, Teumer A. Removing array-specific batch effects in GWAS mega-analyses by applying a two-step imputation workflow reveals new associations for thyroid volume and goiter.](https://doi.org/10.1093/bioadv/vbaf317)
