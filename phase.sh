@@ -54,7 +54,7 @@ startalltime=`date +%s`
   #echo "Suffix: $Suffix"
 
 
-for chr in {1..23}; do
+for chr in {1..22}; do
 starttime=`date +%s`
 input_bcf="${pathway}/${Cohort_prefix}_chr${chr}_aligned.bcf.gz"
 output_phased="${pathway}/${Cohort_prefix}_chr${chr}_phased"
